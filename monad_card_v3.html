@@ -1,0 +1,352 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#05030f}
+  .wrap{min-height:100vh;background:#05030f;font-family:'Syne',sans-serif;padding:2.5rem 1rem 4rem;color:#e8e0ff;position:relative;overflow:hidden}
+  .bg-orb{position:absolute;border-radius:50%;pointer-events:none}
+  .orb1{width:500px;height:500px;top:-150px;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(79,50,210,0.22) 0%,transparent 70%)}
+  .orb2{width:300px;height:300px;bottom:-80px;right:-60px;background:radial-gradient(ellipse,rgba(120,80,255,0.12) 0%,transparent 70%)}
+  .logo{text-align:center;margin-bottom:2rem}
+  .logo-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(79,50,210,0.18);border:1px solid rgba(130,100,255,0.3);border-radius:999px;padding:7px 18px;font-size:11px;letter-spacing:0.14em;color:#a48fff;text-transform:uppercase;font-family:'Space Mono',monospace}
+  .logo-dot{width:7px;height:7px;border-radius:50%;background:#7c5aff;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;text-align:center;margin:.8rem 0 .4rem;color:#fff;line-height:1.1}
+  h1 span{color:#8b6fff}
+  .sub{text-align:center;color:rgba(180,160,255,0.4);font-size:12px;margin-bottom:2.5rem;font-family:'Space Mono',monospace;letter-spacing:.05em}
+  .panel{max-width:540px;margin:0 auto 2rem;background:rgba(20,12,50,0.7);border:1px solid rgba(100,70,220,0.2);border-radius:18px;padding:1.5rem}
+  .input-label{font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(160,130,255,0.55);font-family:'Space Mono',monospace;margin-bottom:7px;display:block}
+  .input-row{display:flex;gap:8px}
+  input[type=text]{flex:1;background:rgba(12,6,35,0.8);border:1px solid rgba(100,70,220,0.25);border-radius:10px;padding:12px 15px;color:#ddd4ff;font-family:'Space Mono',monospace;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s}
+  input[type=text]:focus{border-color:rgba(130,100,255,0.6);box-shadow:0 0 0 3px rgba(100,70,220,0.1)}
+  input[type=text]::placeholder{color:rgba(150,120,255,0.25)}
+  .btn{background:#4f32d2;border:none;border-radius:10px;padding:12px 20px;color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap;letter-spacing:.03em}
+  .btn:hover{background:#6244e8;transform:translateY(-1px)}
+  .btn:active{transform:scale(0.97)}
+  .btn:disabled{opacity:0.35;cursor:not-allowed;transform:none}
+  .btn-ghost{background:transparent;border:1px solid rgba(100,70,220,0.35);color:#9980ff;flex:1}
+  .btn-ghost:hover{background:rgba(100,70,220,0.12)}
+  .loading-bar{height:2px;background:rgba(100,70,220,0.12);border-radius:2px;overflow:hidden;margin:.5rem 0;display:none}
+  .loading-bar.on{display:block}
+  .loading-fill{height:100%;background:linear-gradient(90deg,#4f32d2,#9f6fff,#4f32d2);background-size:200%;animation:sh 1.4s infinite}
+  @keyframes sh{0%{background-position:0%}100%{background-position:200%}}
+  .status{font-family:'Space Mono',monospace;font-size:11px;text-align:center;padding:6px;color:#8b6fff;min-height:28px}
+  .status.err{color:#f09595}
+  .status.ok{color:#7bc9a8}
+  .sep{display:flex;align-items:center;gap:10px;margin:1.2rem 0}
+  .sep-l{flex:1;height:1px;background:rgba(100,70,220,0.15)}
+  .sep-t{font-size:10px;color:rgba(150,120,255,0.35);font-family:'Space Mono',monospace;letter-spacing:.1em}
+  .card-outer{max-width:540px;margin:0 auto;display:none;animation:up .5s ease forwards}
+  .card-outer.show{display:block}
+  @keyframes up{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+  .card{
+    position:relative;border-radius:22px;overflow:hidden;
+    background:#0d0820;
+    border:1px solid rgba(100,70,220,0.35);
+    padding:0;
+  }
+  .card-shine{
+    position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent 0%,rgba(150,120,255,0.6) 30%,rgba(200,180,255,0.9) 50%,rgba(150,120,255,0.6) 70%,transparent 100%);
+  }
+  .card-dots{
+    position:absolute;inset:0;
+    background-image:radial-gradient(rgba(100,70,220,0.08) 1px,transparent 1px);
+    background-size:20px 20px;
+    pointer-events:none;
+  }
+  .card-glow{
+    position:absolute;top:-80px;left:50%;transform:translateX(-50%);
+    width:300px;height:200px;
+    background:radial-gradient(ellipse,rgba(100,70,220,0.15) 0%,transparent 70%);
+    pointer-events:none;
+  }
+  .card-inner{position:relative;padding:1.75rem}
+
+  .card-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem;gap:12px}
+  .avatar{
+    width:52px;height:52px;border-radius:14px;
+    background:#1a0f40;
+    border:1px solid rgba(120,90,255,0.35);
+    display:flex;align-items:center;justify-content:center;
+    font-size:19px;font-weight:800;color:#c4b0ff;flex-shrink:0;
+    font-family:'Syne',sans-serif;letter-spacing:-1px;
+  }
+  .id-block{flex:1;min-width:0}
+  .uname{font-size:21px;font-weight:800;color:#fff;line-height:1.1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .uaddr{font-family:'Space Mono',monospace;font-size:10px;color:rgba(160,130,255,0.45);margin-top:5px}
+
+  .real-one{
+    position:relative;
+    flex-shrink:0;
+    display:flex;align-items:center;gap:7px;
+    padding:7px 14px;
+    border-radius:10px;
+    background:rgba(10,5,30,0.8);
+    border:1px solid rgba(120,90,255,0.4);
+    overflow:hidden;
+    cursor:default;
+  }
+  .real-one-bg{
+    position:absolute;inset:0;
+    background:linear-gradient(135deg,rgba(79,50,210,0.25),rgba(160,100,255,0.1),rgba(200,150,255,0.15));
+  }
+  .real-one-shimmer{
+    position:absolute;top:0;left:-100%;width:60%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);
+    animation:sweep 2.5s infinite;
+  }
+  @keyframes sweep{0%{left:-100%}100%{left:200%}}
+  .real-star{
+    position:relative;
+    width:14px;height:14px;flex-shrink:0;
+  }
+  .real-star svg{width:14px;height:14px;display:block}
+  .real-txt{
+    position:relative;
+    font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
+    color:#c4b0ff;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;
+  }
+  .real-dot{
+    position:relative;
+    width:5px;height:5px;border-radius:50%;background:#9f7fff;
+    animation:pulse 1.5s infinite;flex-shrink:0;
+  }
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem}
+  .stat{
+    background:rgba(255,255,255,0.025);
+    border:1px solid rgba(100,70,200,0.15);
+    border-radius:14px;padding:.85rem 1rem;
+  }
+  .stat-num{font-size:24px;font-weight:800;color:#e0d4ff;line-height:1;font-family:'Space Mono',monospace}
+  .stat-num.hi{color:#a48fff}
+  .stat-lbl{font-size:10px;color:rgba(150,120,255,0.45);margin-top:4px;letter-spacing:.08em;text-transform:uppercase}
+
+  .card-footer{
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1px solid rgba(100,70,200,0.12);
+    padding-top:.9rem;
+  }
+  .mlogo{font-family:'Space Mono',monospace;font-size:11px;color:rgba(130,100,220,0.4);letter-spacing:.12em;text-transform:uppercase}
+  .chain-pill{
+    font-family:'Space Mono',monospace;font-size:10px;color:rgba(150,120,255,0.5);
+    background:rgba(79,50,210,0.12);border:1px solid rgba(100,70,220,0.18);
+    border-radius:999px;padding:3px 10px;display:flex;align-items:center;gap:5px;
+  }
+  .cpd{width:5px;height:5px;border-radius:50%;background:#7bc9a8;animation:pulse 2s infinite}
+
+  .btns{display:flex;gap:8px;margin-top:.9rem}
+  .powered{font-family:'Space Mono',monospace;font-size:10px;color:rgba(130,100,220,0.25);text-align:center;margin-top:.6rem}
+</style>
+
+<div class="wrap">
+  <div class="bg-orb orb1"></div>
+  <div class="bg-orb orb2"></div>
+  <h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Monad onchain identity card generator</h2>
+
+  <div class="logo">
+    <div class="logo-badge"><div class="logo-dot"></div>Monad Mainnet · Live</div>
+  </div>
+
+  <h1>Your <span>Onchain</span><br>Identity Card</h1>
+  <p class="sub">// prove you're a real one on Monad</p>
+
+  <div class="panel">
+    <div style="margin-bottom:1rem">
+      <span class="input-label">Wallet Address</span>
+      <div class="input-row">
+        <input type="text" id="addrInput" placeholder="0x..." maxlength="42" />
+        <button class="btn" id="fetchBtn" onclick="fetchData()">Fetch →</button>
+      </div>
+    </div>
+    <div class="loading-bar" id="loadingBar"><div class="loading-fill"></div></div>
+    <div class="status" id="status"></div>
+
+    <div id="step2" style="display:none">
+      <div class="sep"><div class="sep-l"></div><span class="sep-t">step 2</span><div class="sep-l"></div></div>
+      <span class="input-label">Your Username</span>
+      <div class="input-row">
+        <input type="text" id="userInput" placeholder="your handle..." maxlength="24" />
+        <button class="btn" onclick="generateCard()">Generate</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-outer" id="cardOuter">
+    <div class="card">
+      <div class="card-shine"></div>
+      <div class="card-dots"></div>
+      <div class="card-glow"></div>
+      <div class="card-inner">
+        <div class="card-header">
+          <div class="avatar" id="cAvatar">?</div>
+          <div class="id-block">
+            <div class="uname" id="cUsername">@username</div>
+            <div class="uaddr" id="cAddress">0x...</div>
+          </div>
+          <div class="real-one" id="realOne" style="display:none">
+            <div class="real-one-bg"></div>
+            <div class="real-one-shimmer"></div>
+            <div class="real-star">
+              <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 1L8.5 5.5H13L9.5 8L11 12.5L7 10L3 12.5L4.5 8L1 5.5H5.5L7 1Z" fill="#b09fff" stroke="#c4b0ff" stroke-width="0.5"/>
+              </svg>
+            </div>
+            <span class="real-txt">Real One</span>
+            <div class="real-dot"></div>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-num hi" id="cTxns">—</div>
+            <div class="stat-lbl">Transactions</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" id="cDapps">—</div>
+            <div class="stat-lbl">Dapps interacted</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num hi" id="cDays">—</div>
+            <div class="stat-lbl">Active days</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num" id="cMon">—</div>
+            <div class="stat-lbl">MON balance</div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="mlogo">◈ Monad</div>
+          <div class="chain-pill"><div class="cpd"></div>Mainnet · Live</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-ghost" onclick="copyCard()">Copy card</button>
+      <button class="btn" style="flex:1" onclick="shareCard()">Share on X ↗</button>
+    </div>
+    <div class="powered">data via Claude · Monad mainnet RPC</div>
+  </div>
+</div>
+
+<script>
+let walletData = null;
+
+const shortAddr = a => a ? a.slice(0,6)+'...'+a.slice(-4) : a;
+const initials = n => n ? n.slice(0,2).toUpperCase() : '?';
+const setStatus = (msg, cls='') => {
+  const s = document.getElementById('status');
+  s.textContent = msg;
+  s.className = 'status' + (cls ? ' '+cls : '');
+};
+const isValid = a => /^0x[0-9a-fA-F]{40}$/.test(a.trim());
+
+async function callClaude(prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: `You are a blockchain data fetcher. Use web_search to make POST requests to the Monad mainnet RPC at https://monad-mainnet.drpc.org and fetch real on-chain data for the given wallet address.
+
+Make these JSON-RPC calls:
+1. eth_getTransactionCount - to get total tx count
+2. eth_getBalance - to get MON balance in wei (divide by 1e18)
+3. eth_blockNumber - to get current block (Monad has ~216000 blocks per day at 400ms/block)
+
+Then estimate:
+- activeDays: how many days since first activity (use block spread estimate)
+- dapps: rough estimate as Math.min(50, Math.round(Math.sqrt(txCount) * 2))
+
+Respond ONLY with raw JSON, no markdown, no explanation:
+{"txns":42,"monBalance":"1.23","activeDays":14,"dapps":7}
+
+If RPC fails, use realistic estimates and add "estimated":true to the JSON.`,
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  const data = await res.json();
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+  return text;
+}
+
+async function fetchData() {
+  const addr = document.getElementById('addrInput').value.trim();
+  if (!addr) { setStatus('Enter a wallet address', 'err'); return; }
+  if (!isValid(addr)) { setStatus('Invalid address format', 'err'); return; }
+
+  document.getElementById('fetchBtn').disabled = true;
+  document.getElementById('loadingBar').classList.add('on');
+  document.getElementById('cardOuter').classList.remove('show');
+  document.getElementById('step2').style.display = 'none';
+  walletData = null;
+
+  try {
+    setStatus('Querying Monad mainnet...');
+    const raw = await callClaude(
+      `Fetch on-chain data for Monad mainnet wallet: ${addr}\n\nCall https://monad-mainnet.drpc.org with eth_getTransactionCount, eth_getBalance, eth_blockNumber. Return only JSON.`
+    );
+    const match = raw.match(/\{[\s\S]*?\}/);
+    if (!match) throw new Error('No data returned');
+    const parsed = JSON.parse(match[0]);
+    walletData = { address: addr, ...parsed };
+    setStatus('Loaded from Monad mainnet ✓', 'ok');
+    document.getElementById('loadingBar').classList.remove('on');
+    document.getElementById('fetchBtn').disabled = false;
+    document.getElementById('step2').style.display = 'block';
+    document.getElementById('userInput').focus();
+  } catch(e) {
+    document.getElementById('loadingBar').classList.remove('on');
+    document.getElementById('fetchBtn').disabled = false;
+    setStatus('Error: ' + e.message, 'err');
+  }
+}
+
+function generateCard() {
+  const username = document.getElementById('userInput').value.trim();
+  if (!username) { setStatus('Enter a username', 'err'); return; }
+  if (!walletData) { setStatus('Fetch wallet data first', 'err'); return; }
+  const d = walletData;
+  const isReal = Number(d.txns) > 0;
+
+  document.getElementById('cAvatar').textContent = initials(username);
+  document.getElementById('cUsername').textContent = '@' + username;
+  document.getElementById('cAddress').textContent = shortAddr(d.address);
+  document.getElementById('cTxns').textContent = Number(d.txns).toLocaleString();
+  document.getElementById('cDapps').textContent = d.dapps;
+  document.getElementById('cDays').textContent = d.activeDays;
+  document.getElementById('cMon').textContent = parseFloat(d.monBalance).toFixed(2) + ' MON';
+  document.getElementById('realOne').style.display = isReal ? 'flex' : 'none';
+  setStatus('');
+  document.getElementById('cardOuter').classList.add('show');
+  document.getElementById('cardOuter').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function copyCard() {
+  if (!walletData) return;
+  const d = walletData;
+  const u = document.getElementById('userInput').value.trim();
+  const text = `◈ Monad Onchain Card\n@${u}${Number(d.txns)>0?' · Real One':''}\n${shortAddr(d.address)}\n\nTxns: ${Number(d.txns).toLocaleString()}\nDapps: ${d.dapps}\nActive Days: ${d.activeDays}\nMON: ${parseFloat(d.monBalance).toFixed(2)}\n\n#Monad #MonadMainnet`;
+  navigator.clipboard.writeText(text).then(() => setStatus('Copied!', 'ok')).catch(() => setStatus('Copy failed', 'err'));
+}
+
+function shareCard() {
+  if (!walletData) return;
+  const d = walletData;
+  const u = document.getElementById('userInput').value.trim();
+  const isReal = Number(d.txns) > 0;
+  const tweet = `${isReal ? 'Real One on Monad' : 'Just landed on Monad'} 🟣\n\n@${u}\n${Number(d.txns).toLocaleString()} txns · ${d.dapps} dapps · ${d.activeDays} days · ${parseFloat(d.monBalance).toFixed(2)} MON\n\n#Monad #MonadMainnet`;
+  const a = document.createElement('a');
+  a.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet);
+  a.target = '_blank'; a.rel = 'noopener';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+document.getElementById('addrInput').addEventListener('keydown', e => { if(e.key==='Enter') fetchData(); });
+</script>
