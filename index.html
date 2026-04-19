@@ -8,24 +8,19 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { min-height: 100%; background: #0e0b2a; font-family: 'Syne', sans-serif; color: #e8e0ff; }
-
     .page { min-height: 100vh; padding: 2.5rem 1rem 4rem; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; }
-
     .orb { position: absolute; border-radius: 50%; pointer-events: none; }
     .orb1 { width: 700px; height: 500px; top: -200px; left: 50%; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(108,80,240,0.22) 0%, transparent 70%); }
     .orb2 { width: 400px; height: 400px; bottom: -120px; right: -100px; background: radial-gradient(ellipse, rgba(124,111,224,0.1) 0%, transparent 70%); }
 
-    /* HEADER */
     .logo-wrap { margin-bottom: 1.5rem; }
     .logo-badge { display: inline-flex; align-items: center; gap: 9px; background: rgba(124,111,224,0.16); border: 1px solid rgba(124,111,224,0.32); border-radius: 999px; padding: 7px 18px; font-size: 11px; letter-spacing: 0.14em; color: #c0b4ff; text-transform: uppercase; font-family: 'Space Mono', monospace; }
     .logo-dot { width: 7px; height: 7px; border-radius: 50%; background: #7c6fe0; animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
-
     h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; text-align: center; margin: .8rem 0 .4rem; color: #fff; line-height: 1.1; }
     h1 span { color: #7c6fe0; }
     .sub { text-align: center; color: rgba(180,165,255,0.38); font-size: 12px; margin-bottom: 2.5rem; font-family: 'Space Mono', monospace; letter-spacing: .05em; }
 
-    /* INPUT */
     .panel { width: 100%; max-width: 520px; background: rgba(20,14,60,0.65); border: 1px solid rgba(124,111,224,0.2); border-radius: 18px; padding: 1.4rem; backdrop-filter: blur(10px); margin-bottom: 2rem; }
     .lbl { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(160,145,255,0.5); font-family: 'Space Mono', monospace; margin-bottom: 7px; display: block; }
     .row { display: flex; gap: 8px; }
@@ -38,59 +33,46 @@
     .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
     .btn-ghost { background: transparent; border: 1px solid rgba(124,111,224,0.35); color: #b0a0ff; flex: 1; }
     .btn-ghost:hover { background: rgba(124,111,224,0.14); }
-
     .bar { height: 2px; background: rgba(124,111,224,0.12); border-radius: 2px; overflow: hidden; margin: .6rem 0; display: none; }
     .bar.on { display: block; }
     .bar-fill { height: 100%; background: linear-gradient(90deg, #7c6fe0, #b0a0ff, #7c6fe0); background-size: 200%; animation: sh 1.4s infinite; }
     @keyframes sh { 0%{background-position:0%} 100%{background-position:200%} }
-
-    .status { font-family: 'Space Mono', monospace; font-size: 11px; text-align: center; padding: 6px; color: #9080ee; min-height: 28px; }
+    .status { font-family: 'Space Mono', monospace; font-size: 11px; text-align: center; padding: 6px; color: #9080ee; min-height: 28px; line-height: 1.6; }
     .status.err { color: #f09595; }
     .status.ok  { color: #7bc9a8; }
-
     .sep { display: flex; align-items: center; gap: 10px; margin: 1.1rem 0 .9rem; }
     .sep-l { flex: 1; height: 1px; background: rgba(124,111,224,0.14); }
     .sep-t { font-size: 10px; color: rgba(160,145,255,0.32); font-family: 'Space Mono', monospace; letter-spacing: .1em; }
 
-    /* ══ TRADING CARD ══ */
     .card-outer { display: none; flex-direction: column; align-items: center; gap: 1rem; animation: up .5s ease forwards; }
     .card-outer.show { display: flex; }
     @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-    .card {
-      width: 300px; border-radius: 22px; overflow: hidden; position: relative;
-      background: linear-gradient(170deg, #2c1e7a 0%, #1a1060 45%, #100a3d 100%);
-      border: 2px solid rgba(124,111,224,0.55);
-    }
+    .card { width: 300px; border-radius: 22px; overflow: hidden; position: relative; background: linear-gradient(170deg, #2c1e7a 0%, #1a1060 45%, #100a3d 100%); border: 2px solid rgba(124,111,224,0.55); }
     .card-shine { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(170,155,255,0.7) 35%, rgba(230,220,255,1) 50%, rgba(170,155,255,0.7) 65%, transparent); z-index: 10; }
     .card-holo { position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 22px; background: linear-gradient(135deg, rgba(124,111,224,0.06) 0%, rgba(160,145,255,0.08) 50%, rgba(100,80,220,0.04) 100%); animation: holo 4s ease-in-out infinite alternate; }
     @keyframes holo { 0%{opacity:0.5} 100%{opacity:1} }
     .card-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(124,111,224,0.1) 1px, transparent 1px); background-size: 18px 18px; pointer-events: none; z-index: 0; }
 
-    /* TOP BAR */
     .card-top { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 12px; background: rgba(124,111,224,0.1); border-bottom: 1px solid rgba(124,111,224,0.2); }
     .card-username { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: #fff; text-shadow: 0 0 18px rgba(160,145,255,0.5); letter-spacing: .01em; }
     .card-wallet { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(200,185,255,0.45); margin-top: 2px; }
     .card-icon { width: 30px; height: 30px; border-radius: 50%; background: #7c6fe0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .card-icon svg { width: 18px; height: 18px; }
 
-    /* STATS */
     .card-stats { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(124,111,224,0.12); border-bottom: 1px solid rgba(124,111,224,0.15); }
     .stat { background: #100a3d; padding: 18px 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
     .stat-val { font-family: 'Space Mono', monospace; font-size: 26px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 0 14px rgba(124,111,224,0.7); }
     .stat-val.p { color: #b8acff; }
     .stat-lbl { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(180,165,255,0.45); margin-top: 6px; letter-spacing: .07em; text-transform: uppercase; line-height: 1.4; }
 
-    /* REAL ONE */
     .card-real { position: relative; z-index: 2; overflow: hidden; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: rgba(124,111,224,0.08); border-bottom: 1px solid rgba(124,111,224,0.12); }
     .real-shimmer { position: absolute; top: 0; left: -100%; width: 55%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: sweep 3s infinite; }
     @keyframes sweep { 0%{left:-100%} 100%{left:200%} }
-
     .real-icon { position: relative; z-index: 1; width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; background: #7c6fe0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .real-icon::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04)); animation: ipulse 2s ease-in-out infinite alternate; }
     @keyframes ipulse { 0%{opacity:0.5} 100%{opacity:1} }
     .real-icon svg { position: relative; z-index: 1; width: 23px; height: 23px; }
-
     .real-text { position: relative; z-index: 1; flex: 1; }
     .real-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: .02em; }
     .real-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(180,165,255,0.48); margin-top: 2px; }
@@ -98,17 +80,12 @@
     .real-inactive .real-sub { color: rgba(150,130,255,0.28); }
     .real-dot { position: relative; z-index: 1; width: 6px; height: 6px; border-radius: 50%; background: #7c6fe0; flex-shrink: 0; animation: pulse 1.8s infinite; }
 
-    /* FOOTER */
     .card-footer { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 9px 16px; background: rgba(0,0,0,0.25); }
     .footer-brand { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(160,145,255,0.32); letter-spacing: .12em; text-transform: uppercase; }
     .footer-pill { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(160,145,255,0.42); background: rgba(124,111,224,0.16); border: 1px solid rgba(124,111,224,0.2); border-radius: 999px; padding: 2px 9px; display: flex; align-items: center; gap: 5px; }
     .footer-dot { width: 5px; height: 5px; border-radius: 50%; background: #7bc9a8; animation: pulse 2s infinite; }
-
-    /* ACTIONS */
     .card-btns { display: flex; gap: 8px; width: 300px; }
     .powered { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(140,125,220,0.2); text-align: center; }
-
-    /* Monad logo SVG path — reusable */
   </style>
 </head>
 <body>
@@ -155,7 +132,7 @@
           <div class="card-wallet" id="cAddr">0x0000...0000</div>
         </div>
         <div class="card-icon">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 40 40" fill="none">
             <path d="M20 3C12.5 3 3 12.5 3 20C3 27.5 12.5 37 20 37C27.5 37 37 27.5 37 20C37 12.5 27.5 3 20 3Z" fill="white"/>
             <path d="M20 10.5C16 10.5 10.5 16 10.5 20C10.5 24 16 29.5 20 29.5C24 29.5 29.5 24 29.5 20C29.5 16 24 10.5 20 10.5Z" fill="#7c6fe0"/>
             <path d="M20 14.5C18 14.5 14.5 18 14.5 20C14.5 22 18 25.5 20 25.5C22 25.5 25.5 22 25.5 20C25.5 18 22 14.5 20 14.5Z" fill="white"/>
@@ -164,28 +141,16 @@
       </div>
 
       <div class="card-stats">
-        <div class="stat">
-          <div class="stat-val p" id="cTxns">—</div>
-          <div class="stat-lbl">Total<br>Transactions</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val" id="cDapps">—</div>
-          <div class="stat-lbl">Dapps<br>Interacted</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val p" id="cTokens">—</div>
-          <div class="stat-lbl">Verified<br>Tokens Held</div>
-        </div>
-        <div class="stat">
-          <div class="stat-val" id="cDays">—</div>
-          <div class="stat-lbl">Active<br>Days</div>
-        </div>
+        <div class="stat"><div class="stat-val p" id="cTxns">—</div><div class="stat-lbl">Total<br>Transactions</div></div>
+        <div class="stat"><div class="stat-val" id="cDapps">—</div><div class="stat-lbl">Dapps<br>Interacted</div></div>
+        <div class="stat"><div class="stat-val p" id="cTokens">—</div><div class="stat-lbl">Verified<br>Tokens Held</div></div>
+        <div class="stat"><div class="stat-val" id="cDays">—</div><div class="stat-lbl">Active<br>Days</div></div>
       </div>
 
       <div class="card-real" id="realSection">
         <div class="real-shimmer"></div>
         <div class="real-icon">
-          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 40 40" fill="none">
             <path d="M20 3C12.5 3 3 12.5 3 20C3 27.5 12.5 37 20 37C27.5 37 37 27.5 37 20C37 12.5 27.5 3 20 3Z" fill="white"/>
             <path d="M20 10.5C16 10.5 10.5 16 10.5 20C10.5 24 16 29.5 20 29.5C24 29.5 29.5 24 29.5 20C29.5 16 24 10.5 20 10.5Z" fill="#7c6fe0"/>
             <path d="M20 14.5C18 14.5 14.5 18 14.5 20C14.5 22 18 25.5 20 25.5C22 25.5 25.5 22 25.5 20C25.5 18 22 14.5 20 14.5Z" fill="white"/>
@@ -228,11 +193,13 @@
     const r = await fetch('/api/rpc', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ jsonrpc:'2.0', id:1, method, params })
+      body: JSON.stringify({ jsonrpc: '2.0', id: 1, method, params }),
     });
-    if (!r.ok) throw new Error('Proxy error ' + r.status);
-    const d = await r.json();
-    if (d.error) throw new Error(d.error.message);
+    const text = await r.text();
+    let d;
+    try { d = JSON.parse(text); } catch(e) { throw new Error('Bad response: ' + text.slice(0, 80)); }
+    if (!r.ok) throw new Error(d.error || ('HTTP ' + r.status));
+    if (d.error) throw new Error(typeof d.error === 'object' ? d.error.message : d.error);
     return d.result;
   }
 
@@ -249,10 +216,11 @@
 
     try {
       setStatus('Connecting to Monad mainnet...');
+
       const [txHex, balHex, blockHex] = await Promise.all([
         rpc('eth_getTransactionCount', [addr, 'latest']),
         rpc('eth_getBalance',          [addr, 'latest']),
-        rpc('eth_blockNumber',         [])
+        rpc('eth_blockNumber',         []),
       ]);
 
       const txns        = parseInt(txHex, 16);
@@ -278,7 +246,7 @@
       const tokens = txns === 0 ? 0 : Math.min(30, Math.max(1, Math.round(Math.log2(txns + 1) * 2.5)));
 
       walletData = { address: addr, txns, monBalance, activeDays, dapps, tokens };
-      setStatus('Loaded from Monad mainnet ✓', 'ok');
+      setStatus('Loaded ✓', 'ok');
       $('step2').style.display = 'block';
       $('userInput').focus();
     } catch(e) {
@@ -295,14 +263,12 @@
     if (!walletData) { setStatus('Fetch wallet data first', 'err'); return; }
     const d = walletData;
     const isReal = d.txns > 0;
-
-    $('cName').textContent    = username;
-    $('cAddr').textContent    = shortAddr(d.address);
-    $('cTxns').textContent    = d.txns.toLocaleString();
-    $('cDapps').textContent   = d.dapps;
-    $('cTokens').textContent  = d.tokens;
-    $('cDays').textContent    = d.activeDays;
-
+    $('cName').textContent   = username;
+    $('cAddr').textContent   = shortAddr(d.address);
+    $('cTxns').textContent   = d.txns.toLocaleString();
+    $('cDapps').textContent  = d.dapps;
+    $('cTokens').textContent = d.tokens;
+    $('cDays').textContent   = d.activeDays;
     const rs = $('realSection');
     if (isReal) {
       rs.classList.remove('real-inactive');
@@ -313,7 +279,6 @@
       $('realTitle').textContent = 'New to Monad';
       $('realSub').textContent   = 'Just getting started.';
     }
-
     setStatus('');
     $('cardOuter').classList.add('show');
     $('cardOuter').scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -325,17 +290,13 @@
     const d = walletData;
     const text = [
       '◈ Monad Onchain Card',
-      `${u} · ${shortAddr(d.address)}`,
-      '',
-      `Transactions:    ${d.txns.toLocaleString()}`,
-      `Dapps:           ${d.dapps}`,
-      `Tokens Held:     ${d.tokens}`,
-      `Active Days:     ${d.activeDays}`,
-      `MON Balance:     ${d.monBalance}`,
-      '',
+      `${u} · ${shortAddr(d.address)}`, '',
+      `Transactions: ${d.txns.toLocaleString()}`,
+      `Dapps: ${d.dapps}`,
+      `Tokens: ${d.tokens}`,
+      `Active Days: ${d.activeDays}`, '',
       d.txns > 0 ? 'Real Ones — People playing the long game.' : 'New to Monad.',
-      '',
-      '#Monad #MonadMainnet'
+      '', '#Monad #MonadMainnet'
     ].join('\n');
     navigator.clipboard.writeText(text)
       .then(() => setStatus('Copied!', 'ok'))
@@ -350,8 +311,8 @@
     window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(tweet), '_blank', 'noopener');
   }
 
-  $('addrInput').addEventListener('keydown', e => { if(e.key === 'Enter') fetchData(); });
-  $('userInput') && $('userInput').addEventListener('keydown', e => { if(e.key === 'Enter') generateCard(); });
+  $('addrInput').addEventListener('keydown', e => { if(e.key==='Enter') fetchData(); });
+  $('userInput') && $('userInput').addEventListener('keydown', e => { if(e.key==='Enter') generateCard(); });
 </script>
 </body>
 </html>
