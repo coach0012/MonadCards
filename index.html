@@ -1,89 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Monad Onchain Card</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { min-height: 100%; background: #0e0b2a; font-family: 'Syne', sans-serif; color: #e8e0ff; }
-    .page { min-height: 100vh; padding: 2.5rem 1rem 4rem; display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden; }
-    .orb { position: absolute; border-radius: 50%; pointer-events: none; }
-    .orb1 { width: 700px; height: 500px; top: -200px; left: 50%; transform: translateX(-50%); background: radial-gradient(ellipse, rgba(108,80,240,0.22) 0%, transparent 70%); }
-    .orb2 { width: 400px; height: 400px; bottom: -120px; right: -100px; background: radial-gradient(ellipse, rgba(124,111,224,0.1) 0%, transparent 70%); }
-    .logo-wrap { margin-bottom: 1.5rem; }
-    .logo-badge { display: inline-flex; align-items: center; gap: 9px; background: rgba(124,111,224,0.16); border: 1px solid rgba(124,111,224,0.32); border-radius: 999px; padding: 7px 18px; font-size: 11px; letter-spacing: 0.14em; color: #c0b4ff; text-transform: uppercase; font-family: 'Space Mono', monospace; }
-    .logo-dot { width: 7px; height: 7px; border-radius: 50%; background: #7c6fe0; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
-    h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; text-align: center; margin: .8rem 0 .4rem; color: #fff; line-height: 1.1; }
-    h1 span { color: #7c6fe0; }
-    .sub { text-align: center; color: rgba(180,165,255,0.38); font-size: 12px; margin-bottom: 2.5rem; font-family: 'Space Mono', monospace; letter-spacing: .05em; }
-    .panel { width: 100%; max-width: 520px; background: rgba(20,14,60,0.65); border: 1px solid rgba(124,111,224,0.2); border-radius: 18px; padding: 1.4rem; backdrop-filter: blur(10px); margin-bottom: 2rem; }
-    .lbl { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(160,145,255,0.5); font-family: 'Space Mono', monospace; margin-bottom: 7px; display: block; }
-    .row { display: flex; gap: 8px; }
-    input[type=text] { flex: 1; background: rgba(12,8,40,0.8); border: 1px solid rgba(124,111,224,0.25); border-radius: 10px; padding: 12px 15px; color: #ddd4ff; font-family: 'Space Mono', monospace; font-size: 12px; outline: none; transition: border-color .2s, box-shadow .2s; }
-    input[type=text]:focus { border-color: rgba(124,111,224,0.65); box-shadow: 0 0 0 3px rgba(124,111,224,0.12); }
-    input[type=text]::placeholder { color: rgba(150,130,255,0.22); }
-    .btn { background: #7c6fe0; border: none; border-radius: 10px; padding: 12px 20px; color: #fff; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; cursor: pointer; transition: all .15s; white-space: nowrap; }
-    .btn:hover { background: #9080ee; transform: translateY(-1px); }
-    .btn:active { transform: scale(0.97); }
-    .btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
-    .btn-ghost { background: transparent; border: 1px solid rgba(124,111,224,0.35); color: #b0a0ff; flex: 1; }
-    .btn-ghost:hover { background: rgba(124,111,224,0.14); }
-    .bar { height: 2px; background: rgba(124,111,224,0.12); border-radius: 2px; overflow: hidden; margin: .6rem 0; display: none; }
-    .bar.on { display: block; }
-    .bar-fill { height: 100%; background: linear-gradient(90deg, #7c6fe0, #b0a0ff, #7c6fe0); background-size: 200%; animation: sh 1.4s infinite; }
-    @keyframes sh { 0%{background-position:0%} 100%{background-position:200%} }
-    .status { font-family: 'Space Mono', monospace; font-size: 11px; text-align: center; padding: 6px; color: #9080ee; min-height: 28px; line-height: 1.6; }
-    .status.err { color: #f09595; } .status.ok { color: #7bc9a8; }
-    .sep { display: flex; align-items: center; gap: 10px; margin: 1.1rem 0 .9rem; }
-    .sep-l { flex: 1; height: 1px; background: rgba(124,111,224,0.14); }
-    .sep-t { font-size: 10px; color: rgba(160,145,255,0.32); font-family: 'Space Mono', monospace; letter-spacing: .1em; }
-    .card-outer { display: none; flex-direction: column; align-items: center; gap: 1rem; animation: up .5s ease forwards; }
-    .card-outer.show { display: flex; }
-    @keyframes up { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    .card { width: 300px; border-radius: 22px; overflow: hidden; position: relative; background: linear-gradient(170deg, #2c1e7a 0%, #1a1060 45%, #100a3d 100%); border: 2px solid rgba(124,111,224,0.55); }
-    .card-shine { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, rgba(170,155,255,0.7) 35%, rgba(230,220,255,1) 50%, rgba(170,155,255,0.7) 65%, transparent); z-index: 10; }
-    .card-holo { position: absolute; inset: 0; z-index: 1; pointer-events: none; border-radius: 22px; background: linear-gradient(135deg, rgba(124,111,224,0.06) 0%, rgba(160,145,255,0.08) 50%, rgba(100,80,220,0.04) 100%); animation: holo 4s ease-in-out infinite alternate; }
-    @keyframes holo { 0%{opacity:0.5} 100%{opacity:1} }
-    .card-dots { position: absolute; inset: 0; background-image: radial-gradient(rgba(124,111,224,0.1) 1px, transparent 1px); background-size: 18px 18px; pointer-events: none; z-index: 0; }
-    .card-top { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 12px; background: rgba(124,111,224,0.1); border-bottom: 1px solid rgba(124,111,224,0.2); }
-    .card-username { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800; color: #fff; text-shadow: 0 0 18px rgba(160,145,255,0.5); letter-spacing: .01em; }
-    .card-wallet { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(200,185,255,0.45); margin-top: 2px; }
-    .card-icon { width: 30px; height: 30px; border-radius: 50%; background: #7c6fe0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .card-icon svg { width: 18px; height: 18px; }
-    .card-stats { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(124,111,224,0.12); border-bottom: 1px solid rgba(124,111,224,0.15); }
-    .stat { background: #100a3d; padding: 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; }
-    .stat-val { font-family: 'Space Mono', monospace; font-size: 24px; font-weight: 700; color: #fff; line-height: 1; text-shadow: 0 0 14px rgba(124,111,224,0.7); }
-    .stat-val.p { color: #b8acff; }
-    .stat-lbl { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(180,165,255,0.45); margin-top: 5px; letter-spacing: .07em; text-transform: uppercase; line-height: 1.4; }
-    .stat-badge { position: absolute; top: 6px; right: 7px; font-family: 'Space Mono', monospace; font-size: 8px; }
-    .badge-v { color: #7bc9a8; } .badge-e { color: rgba(180,165,255,0.32); }
-    .card-real { position: relative; z-index: 2; overflow: hidden; display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: rgba(124,111,224,0.08); border-bottom: 1px solid rgba(124,111,224,0.12); }
-    .real-shimmer { position: absolute; top: 0; left: -100%; width: 55%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent); animation: sweep 3s infinite; }
-    @keyframes sweep { 0%{left:-100%} 100%{left:200%} }
-    .real-icon { position: relative; z-index: 1; width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0; background: #7c6fe0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .real-icon::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.04)); animation: ipulse 2s ease-in-out infinite alternate; }
-    @keyframes ipulse { 0%{opacity:0.5} 100%{opacity:1} }
-    .real-icon svg { position: relative; z-index: 1; width: 23px; height: 23px; }
-    .real-text { position: relative; z-index: 1; flex: 1; }
-    .real-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: .02em; }
-    .real-sub { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(180,165,255,0.48); margin-top: 2px; }
-    .real-inactive .real-title { color: rgba(180,165,255,0.4); }
-    .real-inactive .real-sub { color: rgba(150,130,255,0.28); }
-    .real-dot { position: relative; z-index: 1; width: 6px; height: 6px; border-radius: 50%; background: #7c6fe0; flex-shrink: 0; animation: pulse 1.8s infinite; }
-    .card-footer { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; padding: 9px 16px; background: rgba(0,0,0,0.25); }
-    .footer-brand { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(160,145,255,0.32); letter-spacing: .12em; text-transform: uppercase; }
-    .footer-pill { font-family: 'Space Mono', monospace; font-size: 9px; color: rgba(160,145,255,0.42); background: rgba(124,111,224,0.16); border: 1px solid rgba(124,111,224,0.2); border-radius: 999px; padding: 2px 9px; display: flex; align-items: center; gap: 5px; }
-    .footer-dot { width: 5px; height: 5px; border-radius: 50%; background: #7bc9a8; animation: pulse 2s infinite; }
-    .card-btns { display: flex; gap: 8px; width: 300px; }
-    .powered { font-family: 'Space Mono', monospace; font-size: 10px; color: rgba(140,125,220,0.2); text-align: center; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{min-height:100%;background:#0c0a1e;font-family:'DM Sans',sans-serif;color:#e0d8ff}
+    .page{min-height:100vh;padding:2.5rem 1rem 4rem;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden}
+    .orb{position:absolute;border-radius:50%;pointer-events:none}
+    .orb1{width:700px;height:500px;top:-200px;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(100,80,220,0.2) 0%,transparent 70%)}
+    .orb2{width:400px;height:400px;bottom:-120px;right:-100px;background:radial-gradient(ellipse,rgba(107,92,231,0.1) 0%,transparent 70%)}
+
+    .logo-wrap{margin-bottom:1.5rem}
+    .logo-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(107,92,231,0.16);border:1px solid rgba(107,92,231,0.32);border-radius:999px;padding:7px 18px;font-size:11px;letter-spacing:.14em;color:#c0b4ff;text-transform:uppercase;font-family:'DM Mono',monospace}
+    .logo-dot{width:7px;height:7px;border-radius:50%;background:#6b5ce7;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+    h1{font-size:clamp(2rem,6vw,3rem);font-weight:700;text-align:center;margin:.8rem 0 .4rem;color:#fff;line-height:1.1}
+    h1 span{color:#7c6fe0}
+    .sub{text-align:center;color:rgba(170,155,255,0.38);font-size:12px;margin-bottom:2.5rem;font-family:'DM Mono',monospace;letter-spacing:.05em}
+
+    .panel{width:100%;max-width:520px;background:rgba(18,16,58,0.65);border:1px solid rgba(107,92,231,0.2);border-radius:16px;padding:1.4rem;backdrop-filter:blur(10px);margin-bottom:2rem}
+    .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,140,255,0.5);font-family:'DM Mono',monospace;margin-bottom:7px;display:block}
+    .row{display:flex;gap:8px}
+    input[type=text]{flex:1;background:rgba(10,8,35,0.8);border:1px solid rgba(107,92,231,0.25);border-radius:10px;padding:12px 15px;color:#d8d0ff;font-family:'DM Mono',monospace;font-size:12px;outline:none;transition:border-color .2s,box-shadow .2s}
+    input[type=text]:focus{border-color:rgba(107,92,231,0.65);box-shadow:0 0 0 3px rgba(107,92,231,0.12)}
+    input[type=text]::placeholder{color:rgba(140,125,220,0.22)}
+    .btn{background:#6b5ce7;border:none;border-radius:10px;padding:12px 20px;color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .btn:hover{background:#7d6ef5;transform:translateY(-1px)}
+    .btn:active{transform:scale(0.97)}
+    .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+    .btn-ghost{background:transparent;border:1px solid rgba(107,92,231,0.35);color:#a898f8}
+    .btn-ghost:hover{background:rgba(107,92,231,0.14)}
+    .btn-dl{background:rgba(107,92,231,0.2);border:1px solid rgba(107,92,231,0.4);color:#b0a0ff}
+    .btn-dl:hover{background:rgba(107,92,231,0.35);transform:translateY(-1px)}
+    .btn-dl.loading{opacity:.5;cursor:not-allowed;transform:none}
+    .bar{height:2px;background:rgba(107,92,231,0.12);border-radius:2px;overflow:hidden;margin:.6rem 0;display:none}
+    .bar.on{display:block}
+    .bar-fill{height:100%;background:linear-gradient(90deg,#6b5ce7,#a898f8,#6b5ce7);background-size:200%;animation:sh 1.4s infinite}
+    @keyframes sh{0%{background-position:0%}100%{background-position:200%}}
+    .status{font-family:'DM Mono',monospace;font-size:11px;text-align:center;padding:6px;color:#8878ee;min-height:28px;line-height:1.6}
+    .status.err{color:#f09595}.status.ok{color:#7bc9a8}
+    .sep{display:flex;align-items:center;gap:10px;margin:1.1rem 0 .9rem}
+    .sep-l{flex:1;height:1px;background:rgba(107,92,231,0.14)}
+    .sep-t{font-size:10px;color:rgba(150,135,220,0.32);font-family:'DM Mono',monospace;letter-spacing:.1em}
+
+    .card-outer{display:none;flex-direction:column;align-items:center;gap:1rem;animation:up .5s ease forwards}
+    .card-outer.show{display:flex}
+    @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    /* CARD */
+    .card{width:340px;border-radius:20px;overflow:hidden;position:relative;background:#12103a;border:1.5px solid rgba(107,92,231,0.38)}
+    .card-top-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(140,110,255,0.6) 30%,rgba(200,180,255,0.95) 50%,rgba(140,110,255,0.6) 70%,transparent);z-index:10}
+
+    /* header */
+    .card-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 14px;background:rgba(107,92,231,0.1);border-bottom:1px solid rgba(107,92,231,0.18)}
+    .head-left{display:flex;align-items:center;gap:12px}
+    .avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#5a3ec8,#8860e8);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-.5px}
+    .h-name{font-size:17px;font-weight:700;color:#fff;line-height:1.1}
+    .h-addr{font-family:'DM Mono',monospace;font-size:10px;color:rgba(165,150,255,0.45);margin-top:3px}
+    .monad-icon{width:32px;height:32px;border-radius:50%;background:#6b5ce7;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .monad-icon svg{width:18px;height:18px}
+
+    /* stats row */
+    .stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(107,92,231,0.15)}
+    .stat-cell{padding:14px 10px;text-align:center;position:relative}
+    .stat-cell:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(107,92,231,0.18)}
+    .stat-n{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:#fff;line-height:1}
+    .stat-n.p{color:#a893ff}
+    .stat-l{font-family:'DM Mono',monospace;font-size:9px;color:rgba(155,140,255,0.45);margin-top:5px;letter-spacing:.07em;text-transform:uppercase;line-height:1.3}
+
+    /* NFT section */
+    .nft-section{padding:14px 18px;border-bottom:1px solid rgba(107,92,231,0.15)}
+    .nft-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .nft-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(155,140,255,0.45)}
+    .nft-badge{background:rgba(107,92,231,0.25);border:1px solid rgba(107,92,231,0.4);border-radius:999px;padding:2px 9px;font-size:9px;color:#b0a0ff;font-family:'DM Mono',monospace}
+    .nft-list{display:flex;flex-direction:column;gap:5px}
+    .nft-row{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;background:rgba(100,200,140,0.06);border:1px solid rgba(100,200,140,0.2)}
+    .nft-check-icon{width:18px;height:18px;border-radius:5px;background:rgba(107,210,150,0.15);border:1px solid rgba(107,210,150,0.45);color:#6bcc8e;font-weight:700;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .nft-name{font-size:11.5px;color:rgba(215,205,255,0.9);font-weight:500}
+    .nft-empty{text-align:center;padding:18px 10px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(155,140,255,0.28);letter-spacing:.05em}
+
+    /* real ones */
+    .real-row{display:flex;align-items:center;gap:12px;padding:13px 18px;position:relative;overflow:hidden;border-bottom:1px solid rgba(107,92,231,0.12)}
+    .real-shimmer{position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);animation:sweep 3s infinite}
+    @keyframes sweep{0%{left:-100%}100%{left:200%}}
+    .real-icon-box{width:38px;height:38px;border-radius:10px;flex-shrink:0;background:#6b5ce7;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .real-icon-box::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);animation:ipulse 2s ease-in-out infinite alternate}
+    @keyframes ipulse{0%{opacity:.5}100%{opacity:1}}
+    .real-icon-box svg{position:relative;z-index:1;width:21px;height:21px}
+    .real-txt{flex:1}
+    .real-title{font-size:14px;font-weight:700;color:#fff}
+    .real-title.dim{color:rgba(160,145,255,0.4)}
+    .real-sub{font-family:'DM Mono',monospace;font-size:9px;color:rgba(155,140,255,0.45);margin-top:2px}
+    .pulse-dot{width:7px;height:7px;border-radius:50%;background:#6b5ce7;animation:pulse 1.8s infinite;flex-shrink:0}
+
+    /* footer */
+    .card-foot{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:rgba(0,0,0,0.2)}
+    .foot-brand{font-family:'DM Mono',monospace;font-size:9px;color:rgba(130,115,205,0.35);letter-spacing:.12em;text-transform:uppercase}
+    .foot-pill{font-family:'DM Mono',monospace;font-size:9px;color:rgba(130,115,205,0.42);background:rgba(107,92,231,0.14);border:1px solid rgba(107,92,231,0.2);border-radius:999px;padding:2px 9px;display:flex;align-items:center;gap:5px}
+    .foot-dot{width:5px;height:5px;border-radius:50%;background:#6bcc8e;animation:pulse 2s infinite}
+
+    .card-btns{display:flex;gap:8px;width:340px}
+    .powered{font-family:'DM Mono',monospace;font-size:10px;color:rgba(120,105,195,0.2);text-align:center}
   </style>
 </head>
 <body>
 <div class="page">
   <div class="orb orb1"></div><div class="orb orb2"></div>
+
   <div class="logo-wrap"><div class="logo-badge"><div class="logo-dot"></div>Monad Mainnet · Live</div></div>
   <h1>Your <span>Onchain</span> Card</h1>
   <p class="sub">// prove you're a real one on Monad</p>
@@ -92,7 +119,7 @@
     <div style="margin-bottom:.9rem">
       <span class="lbl">Wallet Address</span>
       <div class="row">
-        <input type="text" id="addrInput" placeholder="0x..." maxlength="42" />
+        <input type="text" id="addrInput" placeholder="0x..." maxlength="42"/>
         <button class="btn" id="fetchBtn" onclick="fetchData()">Fetch →</button>
       </div>
     </div>
@@ -102,111 +129,169 @@
       <div class="sep"><div class="sep-l"></div><span class="sep-t">step 2</span><div class="sep-l"></div></div>
       <span class="lbl">Your Username</span>
       <div class="row">
-        <input type="text" id="userInput" placeholder="your handle..." maxlength="24" />
+        <input type="text" id="userInput" placeholder="your handle..." maxlength="24"/>
         <button class="btn" onclick="generateCard()">Generate</button>
       </div>
     </div>
   </div>
 
   <div class="card-outer" id="cardOuter">
-    <div class="card">
-      <div class="card-shine"></div><div class="card-holo"></div><div class="card-dots"></div>
-      <div class="card-top">
-        <div>
-          <div class="card-username" id="cName">@username</div>
-          <div class="card-wallet" id="cAddr">0x0000...0000</div>
+    <div class="card" id="cardEl">
+      <div class="card-top-bar"></div>
+      <div class="card-head">
+        <div class="head-left">
+          <div class="avatar" id="cAvatar">?</div>
+          <div>
+            <div class="h-name" id="cName">@username</div>
+            <div class="h-addr" id="cAddr">0x0000...0000</div>
+          </div>
         </div>
-        <div class="card-icon">
+        <div class="monad-icon">
           <svg viewBox="0 0 40 40" fill="none">
             <path d="M20 3C12.5 3 3 12.5 3 20C3 27.5 12.5 37 20 37C27.5 37 37 27.5 37 20C37 12.5 27.5 3 20 3Z" fill="white"/>
-            <path d="M20 10.5C16 10.5 10.5 16 10.5 20C10.5 24 16 29.5 20 29.5C24 29.5 29.5 24 29.5 20C29.5 16 24 10.5 20 10.5Z" fill="#7c6fe0"/>
+            <path d="M20 10.5C16 10.5 10.5 16 10.5 20C10.5 24 16 29.5 20 29.5C24 29.5 29.5 24 29.5 20C29.5 16 24 10.5 20 10.5Z" fill="#6b5ce7"/>
             <path d="M20 14.5C18 14.5 14.5 18 14.5 20C14.5 22 18 25.5 20 25.5C22 25.5 25.5 22 25.5 20C25.5 18 22 14.5 20 14.5Z" fill="white"/>
           </svg>
         </div>
       </div>
-      <div class="card-stats">
-        <div class="stat">
-          <span class="stat-badge badge-v" id="txBadge">verified</span>
-          <div class="stat-val p" id="cTxns">—</div>
-          <div class="stat-lbl">Transactions</div>
+
+      <div class="stats-row">
+        <div class="stat-cell"><div class="stat-n p" id="cTxns">—</div><div class="stat-l">Transactions</div></div>
+        <div class="stat-cell"><div class="stat-n" id="cDays">—</div><div class="stat-l">Active Days</div></div>
+        <div class="stat-cell"><div class="stat-n p" id="cDapps">—</div><div class="stat-l">Dapps used</div></div>
+      </div>
+
+      <div class="nft-section">
+        <div class="nft-header">
+          <span class="nft-title">NFT holdings</span>
+          <span class="nft-badge" id="nftBadge">0 held</span>
         </div>
-        <div class="stat">
-          <span class="stat-badge badge-v">verified</span>
-          <div class="stat-val" id="cMon">—</div>
-          <div class="stat-lbl">MON Balance</div>
-        </div>
-        <div class="stat">
-          <span class="stat-badge badge-v">verified</span>
-          <div class="stat-val p" id="cDays">—</div>
-          <div class="stat-lbl">Active Days</div>
-        </div>
-        <div class="stat">
-          <span class="stat-badge badge-e">est.</span>
-          <div class="stat-val" id="cDapps">—</div>
-          <div class="stat-lbl">Dapps Used</div>
+        <div class="nft-list" id="nftList">
+          <div class="nft-empty">generate card to see holdings</div>
         </div>
       </div>
-      <div class="card-real" id="realSection">
+
+      <div class="real-row">
         <div class="real-shimmer"></div>
-        <div class="real-icon">
+        <div class="real-icon-box">
           <svg viewBox="0 0 40 40" fill="none">
             <path d="M20 3C12.5 3 3 12.5 3 20C3 27.5 12.5 37 20 37C27.5 37 37 27.5 37 20C37 12.5 27.5 3 20 3Z" fill="white"/>
-            <path d="M20 10.5C16 10.5 10.5 16 10.5 20C10.5 24 16 29.5 20 29.5C24 29.5 29.5 24 29.5 20C29.5 16 24 10.5 20 10.5Z" fill="#7c6fe0"/>
+            <path d="M20 10.5C16 10.5 10.5 16 10.5 20C10.5 24 16 29.5 20 29.5C24 29.5 29.5 24 29.5 20C29.5 16 24 10.5 20 10.5Z" fill="#6b5ce7"/>
             <path d="M20 14.5C18 14.5 14.5 18 14.5 20C14.5 22 18 25.5 20 25.5C22 25.5 25.5 22 25.5 20C25.5 18 22 14.5 20 14.5Z" fill="white"/>
           </svg>
         </div>
-        <div class="real-text">
+        <div class="real-txt">
           <div class="real-title" id="realTitle">Real Ones</div>
           <div class="real-sub" id="realSub">People playing the long game.</div>
         </div>
-        <div class="real-dot"></div>
+        <div class="pulse-dot"></div>
       </div>
-      <div class="card-footer">
-        <span class="footer-brand">◈ Monad Cards</span>
-        <span class="footer-pill"><div class="footer-dot"></div>Mainnet · Live</span>
+
+      <div class="card-foot">
+        <span class="foot-brand">◈ Monad Cards</span>
+        <span class="foot-pill"><div class="foot-dot"></div>Mainnet · Live</span>
       </div>
     </div>
+
     <div class="card-btns">
       <button class="btn btn-ghost" onclick="copyCard()">Copy</button>
-      <button class="btn" style="flex:1" onclick="shareCard()">Share on X ↗</button>
+      <button class="btn btn-dl" id="dlBtn" onclick="downloadCard()">↓ Save</button>
+      <button class="btn" style="flex:2" onclick="shareCard()">Share on X ↗</button>
     </div>
     <div class="powered" id="poweredNote">data via Monad mainnet RPC</div>
   </div>
 </div>
+
 <script>
+  // 19 NFT collections — all with verified contract addresses
+  const NFTS = [
+    { name: 'Skrumpeys',       contract: '0xB0DAD798C80e40Dd6b8E8545074C6a5B7B97D2c0' },
+    { name: 'R3tards',         contract: '0x200723A706de0013316E5cd8EBa2b3f53DD90c29' },
+    { name: 'Lil Stars',       contract: '0xCaBF3c04B90f4Fe1B521Fcaf4AcB25D5df478e52' },
+    { name: '10k Squad',       contract: '0x818030837E8350ba63E64d7dC01A547fA73c8279' },
+    { name: 'Purple Frens',    contract: '0xbe88e5E5572aeFa8Fe52B460dbC82e34c78445E2' },
+    { name: 'Molandaks',       contract: '0x36982448e77658b8F58F4665696e3173D1e696C2' },
+    { name: 'Daks',            contract: '0x9F8514cEBee138b61806d4651f51d26C8098b463' },
+    { name: 'Monafuku Cafe',   contract: '0xB6f9Ba0511edCeD7491B06F33201b494575017EB' },
+    { name: 'Llamao',          contract: '0x21D95aDDceBe87BEA4e49534595F242Af002D068' },
+    { name: 'Mongang',         contract: '0xeC7bF726C8011048E3C14C88Fae1a788d22C220f' },
+    { name: 'Fuzzmo',          contract: '0x05795EAa0aE13207B36f2598d37c6AF149700fc1' },
+    { name: 'LootGO Compass',  contract: '0xA3522ea57c0Bc48e602E2fE9F3929309D9618D96' },
+    { name: 'Monalien',        contract: '0x7Cc9ebAaBD29Cd36C1b2c0765307Df6374016e78' },
+    { name: 'Overnads',        contract: '0xFb5BA4061f5c50b1DAA6C067Bb2dFB0A8EbF6a8D' },
+    { name: 'Monadverse',      contract: '0x458e467F911b3b99F24Ec8b5A85e68745c83155e' },
+    { name: 'Chewy',           contract: '0xE1DDF619Bb352E6EB25367bE99606bE02836CbBc' },
+    { name: 'RealNad',         contract: '0xe20c4f8CAcDb1854151f3E12144BdC919e608B9B' },
+    { name: 'Sealuminati',     contract: '0xaEAA920165fD7ce58a0E0772Ffc97F06626572cD' },
+    { name: 'Wassie on Monad', contract: '0x22c1FDdC908005b6e3cc563a2Afba8578221030A' },
+  ];
+
   let walletData = null;
   const $ = id => document.getElementById(id);
-  const shortAddr = a => a ? a.slice(0,4)+'...'+a.slice(-4) : a;
+  const shortAddr = a => a ? a.slice(0,6)+'...'+a.slice(-4) : a;
   const isValid = a => /^0x[0-9a-fA-F]{40}$/.test(a.trim());
-  function setStatus(msg,cls=''){const s=$('status');s.textContent=msg;s.className='status'+(cls?' '+cls:'');}
+
+  function setStatus(msg, cls='') {
+    const s = $('status'); s.textContent = msg;
+    s.className = 'status' + (cls ? ' '+cls : '');
+  }
+
+  async function rpc(method, params) {
+    const r = await fetch('/api/rpc', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({jsonrpc:'2.0', id:1, method, params})
+    });
+    const t = await r.text();
+    let d; try { d = JSON.parse(t); } catch { throw new Error('Bad response'); }
+    if (!r.ok || d.error) throw new Error((d.error && d.error.message) || d.error || 'HTTP '+r.status);
+    return d.result;
+  }
+
+  async function checkNftBalance(wallet, contract) {
+    // ERC-721 balanceOf(address) selector = 0x70a08231
+    const data = '0x70a08231' + wallet.slice(2).padStart(64, '0');
+    try {
+      const res = await rpc('eth_call', [{ to: contract, data }, 'latest']);
+      return parseInt(res, 16) > 0;
+    } catch { return false; }
+  }
 
   async function fetchData() {
     const addr = $('addrInput').value.trim();
-    if (!addr) { setStatus('Enter a wallet address','err'); return; }
-    if (!isValid(addr)) { setStatus('Invalid address format','err'); return; }
+    if (!addr) { setStatus('Enter a wallet address', 'err'); return; }
+    if (!isValid(addr)) { setStatus('Invalid address format', 'err'); return; }
+
     $('fetchBtn').disabled = true;
     $('bar').classList.add('on');
     $('cardOuter').classList.remove('show');
     $('step2').style.display = 'none';
     walletData = null;
+
     try {
       setStatus('Fetching on-chain data...');
+
       const r = await fetch('/api/rpc', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'walletStats', address: addr }),
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ action: 'walletStats', address: addr })
       });
-      const text = await r.text();
-      let d;
-      try { d = JSON.parse(text); } catch { throw new Error('Bad response: ' + text.slice(0,80)); }
-      if (!r.ok || d.error) throw new Error(d.error || 'HTTP ' + r.status);
-      walletData = { address: addr, ...d };
-      const src = d.txSource === 'explorer' ? 'explorer (in+out)' : 'RPC nonce (outgoing)';
-      setStatus('Loaded ✓  tx count via ' + src, 'ok');
+      const t = await r.text();
+      let d; try { d = JSON.parse(t); } catch { throw new Error('Bad response: '+t.slice(0,80)); }
+      if (!r.ok || d.error) throw new Error(d.error || 'HTTP '+r.status);
+
+      setStatus(`Checking ${NFTS.length} NFT collections...`);
+
+      // Check all 19 NFTs in parallel
+      const nftResults = await Promise.all(
+        NFTS.map(nft => checkNftBalance(addr, nft.contract))
+      );
+
+      walletData = { address: addr, ...d, nftResults };
+      const heldCount = nftResults.filter(Boolean).length;
+      setStatus(`Loaded ✓  ·  ${heldCount} NFT${heldCount !== 1 ? 's' : ''} found`, 'ok');
       $('step2').style.display = 'block';
       $('userInput').focus();
     } catch(e) {
-      setStatus('Error: ' + e.message, 'err');
+      setStatus('Error: '+e.message, 'err');
     } finally {
       $('bar').classList.remove('on');
       $('fetchBtn').disabled = false;
@@ -215,56 +300,119 @@
 
   function generateCard() {
     const username = $('userInput').value.trim();
-    if (!username)   { setStatus('Enter a username','err'); return; }
-    if (!walletData) { setStatus('Fetch wallet data first','err'); return; }
+    if (!username) { setStatus('Enter a username', 'err'); return; }
+    if (!walletData) { setStatus('Fetch wallet data first', 'err'); return; }
     const d = walletData;
-    $('cName').textContent  = username;
-    $('cAddr').textContent  = shortAddr(d.address);
-    $('cTxns').textContent  = Number(d.txns).toLocaleString();
-    $('cMon').textContent   = d.monBalance;
-    $('cDays').textContent  = d.activeDays;
-    $('cDapps').textContent = d.dapps;
-    const tb = $('txBadge');
-    tb.textContent = d.txSource === 'explorer' ? 'verified' : 'outgoing';
-    tb.className = 'stat-badge ' + (d.txSource === 'explorer' ? 'badge-v' : 'badge-e');
-    const rs = $('realSection');
     const isReal = Number(d.txns) > 0;
-    if (isReal) {
-      rs.classList.remove('real-inactive');
-      $('realTitle').textContent = 'Real Ones';
-      $('realSub').textContent   = 'People playing the long game.';
+
+    $('cAvatar').textContent = username.slice(0,2).toUpperCase();
+    $('cName').textContent   = username;
+    $('cAddr').textContent   = shortAddr(d.address);
+    $('cTxns').textContent   = Number(d.txns).toLocaleString();
+    $('cDays').textContent   = d.activeDays;
+    $('cDapps').textContent  = d.dapps > 0 ? '~'+d.dapps : '0';
+
+    // Only show NFTs the wallet actually holds
+    const heldNfts = NFTS.filter((_, i) => d.nftResults[i] === true);
+    const heldCount = heldNfts.length;
+
+    $('nftBadge').textContent = heldCount + ' held';
+
+    const list = $('nftList');
+    if (heldCount === 0) {
+      list.innerHTML = `<div class="nft-empty">no NFTs found in this wallet</div>`;
     } else {
-      rs.classList.add('real-inactive');
-      $('realTitle').textContent = 'New to Monad';
-      $('realSub').textContent   = 'Just getting started.';
+      list.innerHTML = heldNfts.map(nft =>
+        `<div class="nft-row">
+          <div class="nft-check-icon">✓</div>
+          <span class="nft-name">${nft.name}</span>
+        </div>`
+      ).join('');
     }
-    $('poweredNote').textContent = 'mainnet age: ' + d.maxDays + ' days · block time ~' + (86400/d.blocksPerDay).toFixed(2) + 's';
+
+    const rt = $('realTitle');
+    if (isReal) {
+      rt.textContent = 'Real Ones'; rt.className = 'real-title';
+      $('realSub').textContent = 'People playing the long game.';
+    } else {
+      rt.textContent = 'New to Monad'; rt.className = 'real-title dim';
+      $('realSub').textContent = 'Just getting started.';
+    }
+
+    $('poweredNote').textContent = 'mainnet age: '+d.maxDays+' days · block ~'+(86400/d.blocksPerDay).toFixed(2)+'s';
     setStatus('');
     $('cardOuter').classList.add('show');
-    $('cardOuter').scrollIntoView({ behavior:'smooth', block:'center' });
+    $('cardOuter').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  async function downloadCard() {
+    const dlBtn = $('dlBtn');
+    if (dlBtn.classList.contains('loading')) return;
+    dlBtn.classList.add('loading');
+    dlBtn.textContent = '...';
+
+    try {
+      const card = $('cardEl');
+      const canvas = await html2canvas(card, {
+        backgroundColor: '#12103a',
+        scale: 3,         // 3x resolution for crisp PNG
+        useCORS: true,
+        logging: false,
+        removeContainer: true,
+      });
+      const link = document.createElement('a');
+      const safeUser = ($('userInput').value.trim() || 'monad').replace(/[^a-zA-Z0-9_-]/g, '');
+      link.download = `monad-card-${safeUser}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch(e) {
+      setStatus('Download failed: '+e.message, 'err');
+    } finally {
+      dlBtn.classList.remove('loading');
+      dlBtn.textContent = '↓ Save';
+    }
   }
 
   function copyCard() {
     if (!walletData) return;
     const u = $('userInput').value.trim();
     const d = walletData;
-    const text = ['◈ Monad Onchain Card',`${u} · ${shortAddr(d.address)}`,'',
-      `Transactions: ${Number(d.txns).toLocaleString()}`,`MON Balance:  ${d.monBalance}`,
-      `Active Days:  ${d.activeDays} / ${d.maxDays} max`,`Dapps Used:   ~${d.dapps} (est.)`,'',
-      Number(d.txns)>0?'Real Ones — People playing the long game.':'New to Monad.','','#Monad #MonadMainnet'].join('\n');
-    navigator.clipboard.writeText(text).then(()=>setStatus('Copied!','ok')).catch(()=>setStatus('Copy failed','err'));
+    const heldNfts = NFTS.filter((_, i) => d.nftResults[i] === true).map(n => n.name);
+    const nftLines = heldNfts.length
+      ? heldNfts.map(n => `  ✓ ${n}`).join('\n')
+      : '  (none)';
+    const text = [
+      '◈ Monad Onchain Card',
+      `${u} · ${shortAddr(d.address)}`,
+      '',
+      `Transactions: ${Number(d.txns).toLocaleString()}`,
+      `Active Days:  ${d.activeDays}`,
+      `Dapps Used:   ~${d.dapps} (est.)`,
+      '',
+      `NFT Holdings (${heldNfts.length}):`,
+      nftLines,
+      '',
+      Number(d.txns) > 0 ? 'Real Ones — People playing the long game.' : 'New to Monad.',
+      '',
+      '#Monad #MonadMainnet'
+    ].join('\n');
+    navigator.clipboard.writeText(text)
+      .then(() => setStatus('Copied!', 'ok'))
+      .catch(() => setStatus('Copy failed', 'err'));
   }
 
   function shareCard() {
     if (!walletData) return;
     const u = $('userInput').value.trim();
     const d = walletData;
-    const tweet = `${Number(d.txns)>0?'Real One on Monad 🟣':'Just landed on Monad 🟣'}\n\n${u} · ${shortAddr(d.address)}\n${Number(d.txns).toLocaleString()} txns · ${d.monBalance} MON · ${d.activeDays} active days\n\n#Monad #MonadMainnet`;
-    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet),'_blank','noopener');
+    const heldNfts = NFTS.filter((_, i) => d.nftResults[i] === true).map(n => n.name);
+    const nftStr = heldNfts.length ? heldNfts.join(', ') : 'none yet';
+    const tweet = `${Number(d.txns) > 0 ? 'Real One on Monad 🟣' : 'Just landed on Monad 🟣'}\n\n${u} · ${shortAddr(d.address)}\n${Number(d.txns).toLocaleString()} txns · ${d.activeDays} active days\nNFTs: ${nftStr}\n\n#Monad #MonadMainnet`;
+    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet), '_blank', 'noopener');
   }
 
   $('addrInput').addEventListener('keydown', e => { if(e.key==='Enter') fetchData(); });
-  $('userInput') && $('userInput').addEventListener('keydown', e => { if(e.key==='Enter') generateCard(); });
+  $('userInput').addEventListener('keydown', e => { if(e.key==='Enter') generateCard(); });
 </script>
 </body>
 </html>
