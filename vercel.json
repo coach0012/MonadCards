@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "outputDirectory": "public",
+  "framework": null,
+  "functions": {
+    "api/rpc.js": {
+      "runtime": "nodejs20.x",
+      "memory": 256,
+      "maxDuration": 15
+    }
+  },
+  "rewrites": [
+    { "source": "/api/rpc", "destination": "/api/rpc.js" }
+  ]
+}
