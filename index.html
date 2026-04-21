@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Monad Onchain Card</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     html,body{min-height:100%;background:#0c0a1e;font-family:'DM Sans',sans-serif;color:#e0d8ff}
@@ -32,11 +31,8 @@
     .btn:hover{background:#7d6ef5;transform:translateY(-1px)}
     .btn:active{transform:scale(0.97)}
     .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-    .btn-ghost{background:transparent;border:1px solid rgba(107,92,231,0.35);color:#a898f8}
+    .btn-ghost{background:transparent;border:1px solid rgba(107,92,231,0.35);color:#a898f8;flex:1}
     .btn-ghost:hover{background:rgba(107,92,231,0.14)}
-    .btn-dl{background:rgba(107,92,231,0.2);border:1px solid rgba(107,92,231,0.4);color:#b0a0ff}
-    .btn-dl:hover{background:rgba(107,92,231,0.35);transform:translateY(-1px)}
-    .btn-dl.loading{opacity:.5;cursor:not-allowed;transform:none}
     .bar{height:2px;background:rgba(107,92,231,0.12);border-radius:2px;overflow:hidden;margin:.6rem 0;display:none}
     .bar.on{display:block}
     .bar-fill{height:100%;background:linear-gradient(90deg,#6b5ce7,#a898f8,#6b5ce7);background-size:200%;animation:sh 1.4s infinite}
@@ -52,7 +48,7 @@
     @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
     /* CARD */
-    .card{width:340px;border-radius:20px;overflow:hidden;position:relative;background:#12103a;border:1.5px solid rgba(107,92,231,0.38)}
+    .card{width:320px;border-radius:20px;overflow:hidden;position:relative;background:#12103a;border:1.5px solid rgba(107,92,231,0.38)}
     .card-top-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(140,110,255,0.6) 30%,rgba(200,180,255,0.95) 50%,rgba(140,110,255,0.6) 70%,transparent);z-index:10}
 
     /* header */
@@ -76,12 +72,17 @@
     .nft-section{padding:14px 18px;border-bottom:1px solid rgba(107,92,231,0.15)}
     .nft-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
     .nft-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(155,140,255,0.45)}
-    .nft-badge{background:rgba(107,92,231,0.25);border:1px solid rgba(107,92,231,0.4);border-radius:999px;padding:2px 9px;font-size:9px;color:#b0a0ff;font-family:'DM Mono',monospace}
-    .nft-list{display:flex;flex-direction:column;gap:5px}
-    .nft-row{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;background:rgba(100,200,140,0.06);border:1px solid rgba(100,200,140,0.2)}
-    .nft-check-icon{width:18px;height:18px;border-radius:5px;background:rgba(107,210,150,0.15);border:1px solid rgba(107,210,150,0.45);color:#6bcc8e;font-weight:700;font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-    .nft-name{font-size:11.5px;color:rgba(215,205,255,0.9);font-weight:500}
-    .nft-empty{text-align:center;padding:18px 10px;font-family:'DM Mono',monospace;font-size:10px;color:rgba(155,140,255,0.28);letter-spacing:.05em}
+    .nft-count{font-family:'DM Mono',monospace;font-size:9px;color:rgba(107,200,140,0.7);letter-spacing:.05em}
+    .nft-empty{font-family:'DM Mono',monospace;font-size:11px;color:rgba(150,135,220,0.35);text-align:center;padding:12px 0;letter-spacing:.05em}
+    .nft-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .nft-chip{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:5px 10px;border-radius:8px;
+      background:rgba(107,92,231,0.15);
+      border:1px solid rgba(107,92,231,0.3);
+      font-size:11px;font-weight:500;color:#c8bcff;
+    }
+    .nft-chip-dot{width:5px;height:5px;border-radius:50%;background:#6bcc8e;flex-shrink:0}
 
     /* real ones */
     .real-row{display:flex;align-items:center;gap:12px;padding:13px 18px;position:relative;overflow:hidden;border-bottom:1px solid rgba(107,92,231,0.12)}
@@ -103,7 +104,7 @@
     .foot-pill{font-family:'DM Mono',monospace;font-size:9px;color:rgba(130,115,205,0.42);background:rgba(107,92,231,0.14);border:1px solid rgba(107,92,231,0.2);border-radius:999px;padding:2px 9px;display:flex;align-items:center;gap:5px}
     .foot-dot{width:5px;height:5px;border-radius:50%;background:#6bcc8e;animation:pulse 2s infinite}
 
-    .card-btns{display:flex;gap:8px;width:340px}
+    .card-btns{display:flex;gap:8px;width:320px}
     .powered{font-family:'DM Mono',monospace;font-size:10px;color:rgba(120,105,195,0.2);text-align:center}
   </style>
 </head>
@@ -136,8 +137,9 @@
   </div>
 
   <div class="card-outer" id="cardOuter">
-    <div class="card" id="cardEl">
+    <div class="card">
       <div class="card-top-bar"></div>
+
       <div class="card-head">
         <div class="head-left">
           <div class="avatar" id="cAvatar">?</div>
@@ -163,12 +165,10 @@
 
       <div class="nft-section">
         <div class="nft-header">
-          <span class="nft-title">NFT holdings</span>
-          <span class="nft-badge" id="nftBadge">0 held</span>
+          <div class="nft-title">NFTs held</div>
+          <div class="nft-count" id="nftCount"></div>
         </div>
-        <div class="nft-list" id="nftList">
-          <div class="nft-empty">generate card to see holdings</div>
-        </div>
+        <div id="nftBody"></div>
       </div>
 
       <div class="real-row">
@@ -195,71 +195,88 @@
 
     <div class="card-btns">
       <button class="btn btn-ghost" onclick="copyCard()">Copy</button>
-      <button class="btn btn-dl" id="dlBtn" onclick="downloadCard()">↓ Save</button>
-      <button class="btn" style="flex:2" onclick="shareCard()">Share on X ↗</button>
+      <button class="btn" style="flex:1" onclick="shareCard()">Share on X ↗</button>
     </div>
     <div class="powered" id="poweredNote">data via Monad mainnet RPC</div>
   </div>
 </div>
 
 <script>
-  // 19 NFT collections — all with verified contract addresses
   const NFTS = [
-    { name: 'Skrumpeys',       contract: '0xB0DAD798C80e40Dd6b8E8545074C6a5B7B97D2c0' },
-    { name: 'R3tards',         contract: '0x200723A706de0013316E5cd8EBa2b3f53DD90c29' },
-    { name: 'Lil Stars',       contract: '0xCaBF3c04B90f4Fe1B521Fcaf4AcB25D5df478e52' },
-    { name: '10k Squad',       contract: '0x818030837E8350ba63E64d7dC01A547fA73c8279' },
-    { name: 'Purple Frens',    contract: '0xbe88e5E5572aeFa8Fe52B460dbC82e34c78445E2' },
-    { name: 'Molandaks',       contract: '0x36982448e77658b8F58F4665696e3173D1e696C2' },
-    { name: 'Daks',            contract: '0x9F8514cEBee138b61806d4651f51d26C8098b463' },
-    { name: 'Monafuku Cafe',   contract: '0xB6f9Ba0511edCeD7491B06F33201b494575017EB' },
-    { name: 'Llamao',          contract: '0x21D95aDDceBe87BEA4e49534595F242Af002D068' },
-    { name: 'Mongang',         contract: '0xeC7bF726C8011048E3C14C88Fae1a788d22C220f' },
-    { name: 'Fuzzmo',          contract: '0x05795EAa0aE13207B36f2598d37c6AF149700fc1' },
-    { name: 'LootGO Compass',  contract: '0xA3522ea57c0Bc48e602E2fE9F3929309D9618D96' },
-    { name: 'Monalien',        contract: '0x7Cc9ebAaBD29Cd36C1b2c0765307Df6374016e78' },
-    { name: 'Overnads',        contract: '0xFb5BA4061f5c50b1DAA6C067Bb2dFB0A8EbF6a8D' },
-    { name: 'Monadverse',      contract: '0x458e467F911b3b99F24Ec8b5A85e68745c83155e' },
-    { name: 'Chewy',           contract: '0xE1DDF619Bb352E6EB25367bE99606bE02836CbBc' },
-    { name: 'RealNad',         contract: '0xe20c4f8CAcDb1854151f3E12144BdC919e608B9B' },
-    { name: 'Sealuminati',     contract: '0xaEAA920165fD7ce58a0E0772Ffc97F06626572cD' },
-    { name: 'Wassie on Monad', contract: '0x22c1FDdC908005b6e3cc563a2Afba8578221030A' },
+    { name: 'Skrumpeys',       ca: '0xB0DAD798C80e40Dd6b8E8545074C6a5B7B97D2c0' },
+    { name: 'R3tards',         ca: '0x200723A706de0013316E5cd8EBa2b3f53DD90c29' },
+    { name: 'Lil Stars',       ca: '0xCaBF3c04B90f4Fe1B521Fcaf4AcB25D5df478e52' },
+    { name: '10k Squad',       ca: '0x818030837E8350ba63E64d7dC01A547fA73c8279' },
+    { name: 'Purple Frens',    ca: '0xbe88e5E5572aeFa8Fe52B460dbC82e34c78445E2' },
+    { name: 'Molandaks',       ca: '0x36982448e77658b8F58F4665696e3173D1e696C2' },
+    { name: 'Daks',            ca: '0x9F8514cEBee138b61806d4651f51d26C8098b463' },
+    { name: 'Monafuku Cafe',   ca: '0xB6f9Ba0511edCeD7491B06F33201b494575017EB' },
+    { name: 'Llamao',          ca: '0x21D95aDDceBe87BEA4e49534595F242Af002D068' },
+    { name: 'Mongang',         ca: '0xeC7bF726C8011048E3C14C88Fae1a788d22C220f' },
+    { name: 'Fuzzmo',          ca: '0x05795EAa0aE13207B36f2598d37c6AF149700fc1' },
+    { name: 'LootGO Compass',  ca: '0xA3522ea57c0Bc48e602E2fE9F3929309D9618D96' },
+    { name: 'Monalien',        ca: '0x7Cc9ebAaBD29Cd36C1b2c0765307Df6374016e78' },
+    { name: 'Overnads',        ca: '0xFb5BA4061f5c50b1DAA6C067Bb2dFB0A8EbF6a8D' },
+    { name: 'Monadverse',      ca: '0x458e467F911b3b99F24Ec8b5A85e68745c83155e' },
+    { name: 'Chewy',           ca: '0xE1DDF619Bb352E6EB25367bE99606bE02836CbBc' },
+    { name: 'RealNad',         ca: '0xe20c4f8CAcDb1854151f3E12144BdC919e608B9B' },
+    { name: 'Sealuminati',     ca: '0xaEAA920165fD7ce58a0E0772Ffc97F06626572cD' },
+    { name: 'Wassie on Monad', ca: '0x22c1FDdC908005b6e3cc563a2Afba8578221030A' },
   ];
 
   let walletData = null;
   const $ = id => document.getElementById(id);
-  const shortAddr = a => a ? a.slice(0,6)+'...'+a.slice(-4) : a;
+  const shortAddr = a => a ? a.slice(0,4)+'...'+a.slice(-4) : a;
   const isValid = a => /^0x[0-9a-fA-F]{40}$/.test(a.trim());
 
   function setStatus(msg, cls='') {
     const s = $('status'); s.textContent = msg;
-    s.className = 'status' + (cls ? ' '+cls : '');
+    s.className = 'status'+(cls?' '+cls:'');
   }
 
-  async function rpc(method, params) {
+  async function rpcCall(body) {
     const r = await fetch('/api/rpc', {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({jsonrpc:'2.0', id:1, method, params})
+      body: JSON.stringify(body)
     });
     const t = await r.text();
-    let d; try { d = JSON.parse(t); } catch { throw new Error('Bad response'); }
-    if (!r.ok || d.error) throw new Error((d.error && d.error.message) || d.error || 'HTTP '+r.status);
+    let d; try { d = JSON.parse(t); } catch { throw new Error('Bad RPC response'); }
+    if (d.error) throw new Error(d.error.message || d.error);
     return d.result;
   }
 
-  async function checkNftBalance(wallet, contract) {
-    // ERC-721 balanceOf(address) selector = 0x70a08231
-    const data = '0x70a08231' + wallet.slice(2).padStart(64, '0');
-    try {
-      const res = await rpc('eth_call', [{ to: contract, data }, 'latest']);
-      return parseInt(res, 16) > 0;
-    } catch { return false; }
+  // ERC-721 balanceOf via eth_call — batched using JSON-RPC batch array
+  async function checkAllNfts(wallet) {
+    const addr = wallet.toLowerCase();
+    const padded = addr.slice(2).padStart(64, '0');
+    const selector = '0x70a08231'; // balanceOf(address)
+
+    // Build batch request
+    const batch = NFTS.map((nft, i) => ({
+      jsonrpc: '2.0',
+      id: i,
+      method: 'eth_call',
+      params: [{ to: nft.ca, data: selector + padded }, 'latest']
+    }));
+
+    const r = await fetch('/api/rpc', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(batch)
+    });
+    const results = await r.json();
+
+    // results is an array matching batch order
+    return NFTS.map((nft, i) => {
+      const res = Array.isArray(results) ? results.find(r => r.id === i) : null;
+      if (!res || res.error || !res.result) return false;
+      return parseInt(res.result, 16) > 0;
+    });
   }
 
   async function fetchData() {
     const addr = $('addrInput').value.trim();
-    if (!addr) { setStatus('Enter a wallet address', 'err'); return; }
-    if (!isValid(addr)) { setStatus('Invalid address format', 'err'); return; }
+    if (!addr) { setStatus('Enter a wallet address','err'); return; }
+    if (!isValid(addr)) { setStatus('Invalid address format','err'); return; }
 
     $('fetchBtn').disabled = true;
     $('bar').classList.add('on');
@@ -270,24 +287,27 @@
     try {
       setStatus('Fetching on-chain data...');
 
-      const r = await fetch('/api/rpc', {
+      const statsReq = fetch('/api/rpc', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ action: 'walletStats', address: addr })
       });
-      const t = await r.text();
-      let d; try { d = JSON.parse(t); } catch { throw new Error('Bad response: '+t.slice(0,80)); }
-      if (!r.ok || d.error) throw new Error(d.error || 'HTTP '+r.status);
 
-      setStatus(`Checking ${NFTS.length} NFT collections...`);
+      // Run stats + NFT checks in parallel
+      const [statsRes, nftResults] = await Promise.all([
+        statsReq.then(r => r.json()),
+        (async () => {
+          setStatus('Scanning NFT holdings...');
+          try { return await checkAllNfts(addr); }
+          catch { return NFTS.map(() => false); }
+        })()
+      ]);
 
-      // Check all 19 NFTs in parallel
-      const nftResults = await Promise.all(
-        NFTS.map(nft => checkNftBalance(addr, nft.contract))
-      );
+      if (statsRes.error) throw new Error(statsRes.error);
 
-      walletData = { address: addr, ...d, nftResults };
-      const heldCount = nftResults.filter(Boolean).length;
-      setStatus(`Loaded ✓  ·  ${heldCount} NFT${heldCount !== 1 ? 's' : ''} found`, 'ok');
+      const heldNfts = NFTS.filter((_, i) => nftResults[i]).map(n => n.name);
+      walletData = { address: addr, ...statsRes, nftResults, heldNfts };
+
+      setStatus(`Loaded ✓  —  ${heldNfts.length} NFT collection${heldNfts.length !== 1 ? 's' : ''} found`, 'ok');
       $('step2').style.display = 'block';
       $('userInput').focus();
     } catch(e) {
@@ -300,8 +320,9 @@
 
   function generateCard() {
     const username = $('userInput').value.trim();
-    if (!username) { setStatus('Enter a username', 'err'); return; }
-    if (!walletData) { setStatus('Fetch wallet data first', 'err'); return; }
+    if (!username) { setStatus('Enter a username','err'); return; }
+    if (!walletData) { setStatus('Fetch wallet data first','err'); return; }
+
     const d = walletData;
     const isReal = Number(d.txns) > 0;
 
@@ -312,22 +333,19 @@
     $('cDays').textContent   = d.activeDays;
     $('cDapps').textContent  = d.dapps > 0 ? '~'+d.dapps : '0';
 
-    // Only show NFTs the wallet actually holds
-    const heldNfts = NFTS.filter((_, i) => d.nftResults[i] === true);
-    const heldCount = heldNfts.length;
-
-    $('nftBadge').textContent = heldCount + ' held';
-
-    const list = $('nftList');
-    if (heldCount === 0) {
-      list.innerHTML = `<div class="nft-empty">no NFTs found in this wallet</div>`;
+    // NFT display: show only held ones as chips, or empty message
+    const nftBody = $('nftBody');
+    const nftCount = $('nftCount');
+    if (d.heldNfts.length === 0) {
+      nftCount.textContent = '';
+      nftBody.innerHTML = '<div class="nft-empty">no collections held</div>';
     } else {
-      list.innerHTML = heldNfts.map(nft =>
-        `<div class="nft-row">
-          <div class="nft-check-icon">✓</div>
-          <span class="nft-name">${nft.name}</span>
-        </div>`
-      ).join('');
+      nftCount.textContent = d.heldNfts.length + ' held';
+      nftBody.innerHTML = '<div class="nft-chips">' +
+        d.heldNfts.map(name =>
+          `<div class="nft-chip"><div class="nft-chip-dot"></div>${name}</div>`
+        ).join('') +
+      '</div>';
     }
 
     const rt = $('realTitle');
@@ -342,77 +360,42 @@
     $('poweredNote').textContent = 'mainnet age: '+d.maxDays+' days · block ~'+(86400/d.blocksPerDay).toFixed(2)+'s';
     setStatus('');
     $('cardOuter').classList.add('show');
-    $('cardOuter').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  async function downloadCard() {
-    const dlBtn = $('dlBtn');
-    if (dlBtn.classList.contains('loading')) return;
-    dlBtn.classList.add('loading');
-    dlBtn.textContent = '...';
-
-    try {
-      const card = $('cardEl');
-      const canvas = await html2canvas(card, {
-        backgroundColor: '#12103a',
-        scale: 3,         // 3x resolution for crisp PNG
-        useCORS: true,
-        logging: false,
-        removeContainer: true,
-      });
-      const link = document.createElement('a');
-      const safeUser = ($('userInput').value.trim() || 'monad').replace(/[^a-zA-Z0-9_-]/g, '');
-      link.download = `monad-card-${safeUser}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch(e) {
-      setStatus('Download failed: '+e.message, 'err');
-    } finally {
-      dlBtn.classList.remove('loading');
-      dlBtn.textContent = '↓ Save';
-    }
+    $('cardOuter').scrollIntoView({behavior:'smooth',block:'center'});
   }
 
   function copyCard() {
     if (!walletData) return;
     const u = $('userInput').value.trim();
     const d = walletData;
-    const heldNfts = NFTS.filter((_, i) => d.nftResults[i] === true).map(n => n.name);
-    const nftLines = heldNfts.length
-      ? heldNfts.map(n => `  ✓ ${n}`).join('\n')
-      : '  (none)';
-    const text = [
+    const nftLine = d.heldNfts.length > 0
+      ? 'NFTs: ' + d.heldNfts.join(', ')
+      : 'NFTs: none';
+    const lines = [
       '◈ Monad Onchain Card',
-      `${u} · ${shortAddr(d.address)}`,
-      '',
+      `${u} · ${shortAddr(d.address)}`, '',
       `Transactions: ${Number(d.txns).toLocaleString()}`,
       `Active Days:  ${d.activeDays}`,
       `Dapps Used:   ~${d.dapps} (est.)`,
-      '',
-      `NFT Holdings (${heldNfts.length}):`,
-      nftLines,
-      '',
+      nftLine, '',
       Number(d.txns) > 0 ? 'Real Ones — People playing the long game.' : 'New to Monad.',
-      '',
-      '#Monad #MonadMainnet'
-    ].join('\n');
-    navigator.clipboard.writeText(text)
-      .then(() => setStatus('Copied!', 'ok'))
-      .catch(() => setStatus('Copy failed', 'err'));
+      '', '#Monad #MonadMainnet'
+    ];
+    navigator.clipboard.writeText(lines.join('\n'))
+      .then(() => setStatus('Copied!','ok'))
+      .catch(() => setStatus('Copy failed','err'));
   }
 
   function shareCard() {
     if (!walletData) return;
     const u = $('userInput').value.trim();
     const d = walletData;
-    const heldNfts = NFTS.filter((_, i) => d.nftResults[i] === true).map(n => n.name);
-    const nftStr = heldNfts.length ? heldNfts.join(', ') : 'none yet';
-    const tweet = `${Number(d.txns) > 0 ? 'Real One on Monad 🟣' : 'Just landed on Monad 🟣'}\n\n${u} · ${shortAddr(d.address)}\n${Number(d.txns).toLocaleString()} txns · ${d.activeDays} active days\nNFTs: ${nftStr}\n\n#Monad #MonadMainnet`;
-    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet), '_blank', 'noopener');
+    const nftStr = d.heldNfts.length > 0 ? d.heldNfts.join(', ') : 'none yet';
+    const tweet = `${Number(d.txns)>0?'Real One on Monad 🟣':'Just landed on Monad 🟣'}\n\n${u} · ${shortAddr(d.address)}\n${Number(d.txns).toLocaleString()} txns · ${d.activeDays} active days\nNFTs: ${nftStr}\n\n#Monad #MonadMainnet`;
+    window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet),'_blank','noopener');
   }
 
   $('addrInput').addEventListener('keydown', e => { if(e.key==='Enter') fetchData(); });
-  $('userInput').addEventListener('keydown', e => { if(e.key==='Enter') generateCard(); });
+  $('userInput') && $('userInput').addEventListener('keydown', e => { if(e.key==='Enter') generateCard(); });
 </script>
 </body>
 </html>
