@@ -12,15 +12,13 @@
     .orb{position:absolute;border-radius:50%;pointer-events:none}
     .orb1{width:700px;height:500px;top:-200px;left:50%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(100,80,220,0.2) 0%,transparent 70%)}
     .orb2{width:400px;height:400px;bottom:-120px;right:-100px;background:radial-gradient(ellipse,rgba(107,92,231,0.1) 0%,transparent 70%)}
-
     .logo-wrap{margin-bottom:1.5rem}
     .logo-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(107,92,231,0.16);border:1px solid rgba(107,92,231,0.32);border-radius:999px;padding:7px 18px;font-size:11px;letter-spacing:.14em;color:#c0b4ff;text-transform:uppercase;font-family:'DM Mono',monospace}
     .logo-dot{width:7px;height:7px;border-radius:50%;background:#6b5ce7;animation:pulse 2s infinite}
-    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.35}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
     h1{font-size:clamp(2rem,6vw,3rem);font-weight:700;text-align:center;margin:.8rem 0 .4rem;color:#fff;line-height:1.1}
     h1 span{color:#7c6fe0}
     .sub{text-align:center;color:rgba(170,155,255,0.38);font-size:12px;margin-bottom:2.5rem;font-family:'DM Mono',monospace;letter-spacing:.05em}
-
     .panel{width:100%;max-width:520px;background:rgba(18,16,58,0.65);border:1px solid rgba(107,92,231,0.2);border-radius:16px;padding:1.4rem;backdrop-filter:blur(10px);margin-bottom:2rem}
     .lbl{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,140,255,0.5);font-family:'DM Mono',monospace;margin-bottom:7px;display:block}
     .row{display:flex;gap:8px}
@@ -29,7 +27,7 @@
     input[type=text]::placeholder{color:rgba(140,125,220,0.22)}
     .btn{background:#6b5ce7;border:none;border-radius:10px;padding:12px 20px;color:#fff;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .15s;white-space:nowrap}
     .btn:hover{background:#7d6ef5;transform:translateY(-1px)}
-    .btn:active{transform:scale(0.97)}
+    .btn:active{transform:scale(.97)}
     .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
     .btn-ghost{background:transparent;border:1px solid rgba(107,92,231,0.35);color:#a898f8;flex:1}
     .btn-ghost:hover{background:rgba(107,92,231,0.14)}
@@ -42,16 +40,11 @@
     .sep{display:flex;align-items:center;gap:10px;margin:1.1rem 0 .9rem}
     .sep-l{flex:1;height:1px;background:rgba(107,92,231,0.14)}
     .sep-t{font-size:10px;color:rgba(150,135,220,0.32);font-family:'DM Mono',monospace;letter-spacing:.1em}
-
     .card-outer{display:none;flex-direction:column;align-items:center;gap:1rem;animation:up .5s ease forwards}
     .card-outer.show{display:flex}
     @keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-
-    /* CARD */
     .card{width:320px;border-radius:20px;overflow:hidden;position:relative;background:#12103a;border:1.5px solid rgba(107,92,231,0.38)}
     .card-top-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(140,110,255,0.6) 30%,rgba(200,180,255,0.95) 50%,rgba(140,110,255,0.6) 70%,transparent);z-index:10}
-
-    /* header */
     .card-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px 14px;background:rgba(107,92,231,0.1);border-bottom:1px solid rgba(107,92,231,0.18)}
     .head-left{display:flex;align-items:center;gap:12px}
     .avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#5a3ec8,#8860e8);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:-.5px}
@@ -59,32 +52,22 @@
     .h-addr{font-family:'DM Mono',monospace;font-size:10px;color:rgba(165,150,255,0.45);margin-top:3px}
     .monad-icon{width:32px;height:32px;border-radius:50%;background:#6b5ce7;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .monad-icon svg{width:18px;height:18px}
-
-    /* stats row */
     .stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid rgba(107,92,231,0.15)}
     .stat-cell{padding:14px 10px;text-align:center;position:relative}
     .stat-cell:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:rgba(107,92,231,0.18)}
     .stat-n{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:#fff;line-height:1}
     .stat-n.p{color:#a893ff}
     .stat-l{font-family:'DM Mono',monospace;font-size:9px;color:rgba(155,140,255,0.45);margin-top:5px;letter-spacing:.07em;text-transform:uppercase;line-height:1.3}
-
-    /* NFT section */
     .nft-section{padding:14px 18px;border-bottom:1px solid rgba(107,92,231,0.15)}
     .nft-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
     .nft-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:rgba(155,140,255,0.45)}
-    .nft-count{font-family:'DM Mono',monospace;font-size:9px;color:rgba(107,200,140,0.7);letter-spacing:.05em}
-    .nft-empty{font-family:'DM Mono',monospace;font-size:11px;color:rgba(150,135,220,0.35);text-align:center;padding:12px 0;letter-spacing:.05em}
+    .nft-count{font-family:'DM Mono',monospace;font-size:9px;color:rgba(107,200,140,0.75);letter-spacing:.05em}
+    .nft-scanning{font-family:'DM Mono',monospace;font-size:10px;color:rgba(150,135,220,0.4);text-align:center;padding:10px 0;animation:fade 1s ease-in-out infinite alternate}
+    @keyframes fade{0%{opacity:.4}100%{opacity:1}}
+    .nft-empty{font-family:'DM Mono',monospace;font-size:11px;color:rgba(150,135,220,0.3);text-align:center;padding:12px 0;letter-spacing:.04em}
     .nft-chips{display:flex;flex-wrap:wrap;gap:6px}
-    .nft-chip{
-      display:inline-flex;align-items:center;gap:6px;
-      padding:5px 10px;border-radius:8px;
-      background:rgba(107,92,231,0.15);
-      border:1px solid rgba(107,92,231,0.3);
-      font-size:11px;font-weight:500;color:#c8bcff;
-    }
+    .nft-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;background:rgba(107,92,231,0.15);border:1px solid rgba(107,92,231,0.3);font-size:11px;font-weight:500;color:#c8bcff}
     .nft-chip-dot{width:5px;height:5px;border-radius:50%;background:#6bcc8e;flex-shrink:0}
-
-    /* real ones */
     .real-row{display:flex;align-items:center;gap:12px;padding:13px 18px;position:relative;overflow:hidden;border-bottom:1px solid rgba(107,92,231,0.12)}
     .real-shimmer{position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);animation:sweep 3s infinite}
     @keyframes sweep{0%{left:-100%}100%{left:200%}}
@@ -97,13 +80,10 @@
     .real-title.dim{color:rgba(160,145,255,0.4)}
     .real-sub{font-family:'DM Mono',monospace;font-size:9px;color:rgba(155,140,255,0.45);margin-top:2px}
     .pulse-dot{width:7px;height:7px;border-radius:50%;background:#6b5ce7;animation:pulse 1.8s infinite;flex-shrink:0}
-
-    /* footer */
     .card-foot{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;background:rgba(0,0,0,0.2)}
     .foot-brand{font-family:'DM Mono',monospace;font-size:9px;color:rgba(130,115,205,0.35);letter-spacing:.12em;text-transform:uppercase}
     .foot-pill{font-family:'DM Mono',monospace;font-size:9px;color:rgba(130,115,205,0.42);background:rgba(107,92,231,0.14);border:1px solid rgba(107,92,231,0.2);border-radius:999px;padding:2px 9px;display:flex;align-items:center;gap:5px}
     .foot-dot{width:5px;height:5px;border-radius:50%;background:#6bcc8e;animation:pulse 2s infinite}
-
     .card-btns{display:flex;gap:8px;width:320px}
     .powered{font-family:'DM Mono',monospace;font-size:10px;color:rgba(120,105,195,0.2);text-align:center}
   </style>
@@ -111,7 +91,6 @@
 <body>
 <div class="page">
   <div class="orb orb1"></div><div class="orb orb2"></div>
-
   <div class="logo-wrap"><div class="logo-badge"><div class="logo-dot"></div>Monad Mainnet · Live</div></div>
   <h1>Your <span>Onchain</span> Card</h1>
   <p class="sub">// prove you're a real one on Monad</p>
@@ -139,7 +118,6 @@
   <div class="card-outer" id="cardOuter">
     <div class="card">
       <div class="card-top-bar"></div>
-
       <div class="card-head">
         <div class="head-left">
           <div class="avatar" id="cAvatar">?</div>
@@ -156,21 +134,18 @@
           </svg>
         </div>
       </div>
-
       <div class="stats-row">
         <div class="stat-cell"><div class="stat-n p" id="cTxns">—</div><div class="stat-l">Transactions</div></div>
         <div class="stat-cell"><div class="stat-n" id="cDays">—</div><div class="stat-l">Active Days</div></div>
         <div class="stat-cell"><div class="stat-n p" id="cDapps">—</div><div class="stat-l">Dapps used</div></div>
       </div>
-
       <div class="nft-section">
         <div class="nft-header">
           <div class="nft-title">NFTs held</div>
           <div class="nft-count" id="nftCount"></div>
         </div>
-        <div id="nftBody"></div>
+        <div id="nftBody"><div class="nft-scanning">scanning collections...</div></div>
       </div>
-
       <div class="real-row">
         <div class="real-shimmer"></div>
         <div class="real-icon-box">
@@ -186,13 +161,11 @@
         </div>
         <div class="pulse-dot"></div>
       </div>
-
       <div class="card-foot">
         <span class="foot-brand">◈ Monad Cards</span>
         <span class="foot-pill"><div class="foot-dot"></div>Mainnet · Live</span>
       </div>
     </div>
-
     <div class="card-btns">
       <button class="btn btn-ghost" onclick="copyCard()">Copy</button>
       <button class="btn" style="flex:1" onclick="shareCard()">Share on X ↗</button>
@@ -203,25 +176,25 @@
 
 <script>
   const NFTS = [
-    { name: 'Skrumpeys',       ca: '0xB0DAD798C80e40Dd6b8E8545074C6a5B7B97D2c0' },
-    { name: 'R3tards',         ca: '0x200723A706de0013316E5cd8EBa2b3f53DD90c29' },
-    { name: 'Lil Stars',       ca: '0xCaBF3c04B90f4Fe1B521Fcaf4AcB25D5df478e52' },
-    { name: '10k Squad',       ca: '0x818030837E8350ba63E64d7dC01A547fA73c8279' },
-    { name: 'Purple Frens',    ca: '0xbe88e5E5572aeFa8Fe52B460dbC82e34c78445E2' },
-    { name: 'Molandaks',       ca: '0x36982448e77658b8F58F4665696e3173D1e696C2' },
-    { name: 'Daks',            ca: '0x9F8514cEBee138b61806d4651f51d26C8098b463' },
-    { name: 'Monafuku Cafe',   ca: '0xB6f9Ba0511edCeD7491B06F33201b494575017EB' },
-    { name: 'Llamao',          ca: '0x21D95aDDceBe87BEA4e49534595F242Af002D068' },
-    { name: 'Mongang',         ca: '0xeC7bF726C8011048E3C14C88Fae1a788d22C220f' },
-    { name: 'Fuzzmo',          ca: '0x05795EAa0aE13207B36f2598d37c6AF149700fc1' },
-    { name: 'LootGO Compass',  ca: '0xA3522ea57c0Bc48e602E2fE9F3929309D9618D96' },
-    { name: 'Monalien',        ca: '0x7Cc9ebAaBD29Cd36C1b2c0765307Df6374016e78' },
-    { name: 'Overnads',        ca: '0xFb5BA4061f5c50b1DAA6C067Bb2dFB0A8EbF6a8D' },
-    { name: 'Monadverse',      ca: '0x458e467F911b3b99F24Ec8b5A85e68745c83155e' },
-    { name: 'Chewy',           ca: '0xE1DDF619Bb352E6EB25367bE99606bE02836CbBc' },
-    { name: 'RealNad',         ca: '0xe20c4f8CAcDb1854151f3E12144BdC919e608B9B' },
-    { name: 'Sealuminati',     ca: '0xaEAA920165fD7ce58a0E0772Ffc97F06626572cD' },
-    { name: 'Wassie on Monad', ca: '0x22c1FDdC908005b6e3cc563a2Afba8578221030A' },
+    { name:'Skrumpeys',       ca:'0xB0DAD798C80e40Dd6b8E8545074C6a5B7B97D2c0' },
+    { name:'R3tards',         ca:'0x200723A706de0013316E5cd8EBa2b3f53DD90c29' },
+    { name:'Lil Stars',       ca:'0xCaBF3c04B90f4Fe1B521Fcaf4AcB25D5df478e52' },
+    { name:'10k Squad',       ca:'0x818030837E8350ba63E64d7dC01A547fA73c8279' },
+    { name:'Purple Frens',    ca:'0xbe88e5E5572aeFa8Fe52B460dbC82e34c78445E2' },
+    { name:'Molandaks',       ca:'0x36982448e77658b8F58F4665696e3173D1e696C2' },
+    { name:'Daks',            ca:'0x9F8514cEBee138b61806d4651f51d26C8098b463' },
+    { name:'Monafuku Cafe',   ca:'0xB6f9Ba0511edCeD7491B06F33201b494575017EB' },
+    { name:'Llamao',          ca:'0x21D95aDDceBe87BEA4e49534595F242Af002D068' },
+    { name:'Mongang',         ca:'0xeC7bF726C8011048E3C14C88Fae1a788d22C220f' },
+    { name:'Fuzzmo',          ca:'0x05795EAa0aE13207B36f2598d37c6AF149700fc1' },
+    { name:'LootGO Compass',  ca:'0xA3522ea57c0Bc48e602E2fE9F3929309D9618D96' },
+    { name:'Monalien',        ca:'0x7Cc9ebAaBD29Cd36C1b2c0765307Df6374016e78' },
+    { name:'Overnads',        ca:'0xFb5BA4061f5c50b1DAA6C067Bb2dFB0A8EbF6a8D' },
+    { name:'Monadverse',      ca:'0x458e467F911b3b99F24Ec8b5A85e68745c83155e' },
+    { name:'Chewy',           ca:'0xE1DDF619Bb352E6EB25367bE99606bE02836CbBc' },
+    { name:'RealNad',         ca:'0xe20c4f8CAcDb1854151f3E12144BdC919e608B9B' },
+    { name:'Sealuminati',     ca:'0xaEAA920165fD7ce58a0E0772Ffc97F06626572cD' },
+    { name:'Wassie on Monad', ca:'0x22c1FDdC908005b6e3cc563a2Afba8578221030A' },
   ];
 
   let walletData = null;
@@ -230,52 +203,25 @@
   const isValid = a => /^0x[0-9a-fA-F]{40}$/.test(a.trim());
 
   function setStatus(msg, cls='') {
-    const s = $('status'); s.textContent = msg;
-    s.className = 'status'+(cls?' '+cls:'');
+    const s=$('status'); s.textContent=msg; s.className='status'+(cls?' '+cls:'');
   }
 
-  async function rpcCall(body) {
-    const r = await fetch('/api/rpc', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(body)
-    });
-    const t = await r.text();
-    let d; try { d = JSON.parse(t); } catch { throw new Error('Bad RPC response'); }
-    if (d.error) throw new Error(d.error.message || d.error);
-    return d.result;
-  }
-
-  // ERC-721 balanceOf via eth_call — batched using JSON-RPC batch array
-  async function checkAllNfts(wallet) {
-    const addr = wallet.toLowerCase();
-    const padded = addr.slice(2).padStart(64, '0');
-    const selector = '0x70a08231'; // balanceOf(address)
-
-    // Build batch request
-    const batch = NFTS.map((nft, i) => ({
-      jsonrpc: '2.0',
-      id: i,
-      method: 'eth_call',
-      params: [{ to: nft.ca, data: selector + padded }, 'latest']
-    }));
-
-    const r = await fetch('/api/rpc', {
-      method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(batch)
-    });
-    const results = await r.json();
-
-    // results is an array matching batch order
-    return NFTS.map((nft, i) => {
-      const res = Array.isArray(results) ? results.find(r => r.id === i) : null;
-      if (!res || res.error || !res.result) return false;
-      return parseInt(res.result, 16) > 0;
-    });
+  // All NFT checks go server-side via /api/rpc so no CORS issues
+  async function checkNft(wallet, contract) {
+    try {
+      const r = await fetch('/api/rpc', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'checkNft', wallet, contract })
+      });
+      const d = await r.json();
+      return d.holds === true;
+    } catch { return false; }
   }
 
   async function fetchData() {
     const addr = $('addrInput').value.trim();
-    if (!addr) { setStatus('Enter a wallet address','err'); return; }
+    if (!addr)          { setStatus('Enter a wallet address','err'); return; }
     if (!isValid(addr)) { setStatus('Invalid address format','err'); return; }
 
     $('fetchBtn').disabled = true;
@@ -285,29 +231,26 @@
     walletData = null;
 
     try {
-      setStatus('Fetching on-chain data...');
+      setStatus('Fetching on-chain stats...');
 
-      const statsReq = fetch('/api/rpc', {
+      // Stats and NFT checks run in parallel
+      const statsPromise = fetch('/api/rpc', {
         method: 'POST', headers: {'Content-Type':'application/json'},
         body: JSON.stringify({ action: 'walletStats', address: addr })
-      });
+      }).then(r => r.json());
 
-      // Run stats + NFT checks in parallel
-      const [statsRes, nftResults] = await Promise.all([
-        statsReq.then(r => r.json()),
-        (async () => {
-          setStatus('Scanning NFT holdings...');
-          try { return await checkAllNfts(addr); }
-          catch { return NFTS.map(() => false); }
-        })()
-      ]);
+      // Fire all 19 NFT checks concurrently — each goes server-side, no CORS
+      setStatus('Scanning 19 NFT collections...');
+      const nftPromises = NFTS.map(nft => checkNft(addr, nft.ca));
 
-      if (statsRes.error) throw new Error(statsRes.error);
+      const [stats, nftResults] = await Promise.all([statsPromise, Promise.all(nftPromises)]);
+
+      if (stats.error) throw new Error(stats.error);
 
       const heldNfts = NFTS.filter((_, i) => nftResults[i]).map(n => n.name);
-      walletData = { address: addr, ...statsRes, nftResults, heldNfts };
+      walletData = { address: addr, ...stats, nftResults, heldNfts };
 
-      setStatus(`Loaded ✓  —  ${heldNfts.length} NFT collection${heldNfts.length !== 1 ? 's' : ''} found`, 'ok');
+      setStatus(`Loaded ✓  —  ${heldNfts.length} collection${heldNfts.length!==1?'s':''} held`, 'ok');
       $('step2').style.display = 'block';
       $('userInput').focus();
     } catch(e) {
@@ -318,11 +261,25 @@
     }
   }
 
+  function renderNfts(heldNfts) {
+    const body = $('nftBody');
+    const count = $('nftCount');
+    if (heldNfts.length === 0) {
+      count.textContent = '';
+      body.innerHTML = '<div class="nft-empty">no collections detected</div>';
+    } else {
+      count.textContent = heldNfts.length + ' held';
+      body.innerHTML = '<div class="nft-chips">' +
+        heldNfts.map(name =>
+          `<div class="nft-chip"><div class="nft-chip-dot"></div>${name}</div>`
+        ).join('') + '</div>';
+    }
+  }
+
   function generateCard() {
     const username = $('userInput').value.trim();
-    if (!username) { setStatus('Enter a username','err'); return; }
+    if (!username)   { setStatus('Enter a username','err'); return; }
     if (!walletData) { setStatus('Fetch wallet data first','err'); return; }
-
     const d = walletData;
     const isReal = Number(d.txns) > 0;
 
@@ -333,20 +290,7 @@
     $('cDays').textContent   = d.activeDays;
     $('cDapps').textContent  = d.dapps > 0 ? '~'+d.dapps : '0';
 
-    // NFT display: show only held ones as chips, or empty message
-    const nftBody = $('nftBody');
-    const nftCount = $('nftCount');
-    if (d.heldNfts.length === 0) {
-      nftCount.textContent = '';
-      nftBody.innerHTML = '<div class="nft-empty">no collections held</div>';
-    } else {
-      nftCount.textContent = d.heldNfts.length + ' held';
-      nftBody.innerHTML = '<div class="nft-chips">' +
-        d.heldNfts.map(name =>
-          `<div class="nft-chip"><div class="nft-chip-dot"></div>${name}</div>`
-        ).join('') +
-      '</div>';
-    }
+    renderNfts(d.heldNfts);
 
     const rt = $('realTitle');
     if (isReal) {
@@ -367,22 +311,19 @@
     if (!walletData) return;
     const u = $('userInput').value.trim();
     const d = walletData;
-    const nftLine = d.heldNfts.length > 0
-      ? 'NFTs: ' + d.heldNfts.join(', ')
-      : 'NFTs: none';
+    const nftLine = d.heldNfts.length > 0 ? 'NFTs: '+d.heldNfts.join(', ') : 'NFTs: none';
     const lines = [
-      '◈ Monad Onchain Card',
-      `${u} · ${shortAddr(d.address)}`, '',
+      '◈ Monad Onchain Card', `${u} · ${shortAddr(d.address)}`, '',
       `Transactions: ${Number(d.txns).toLocaleString()}`,
       `Active Days:  ${d.activeDays}`,
       `Dapps Used:   ~${d.dapps} (est.)`,
       nftLine, '',
-      Number(d.txns) > 0 ? 'Real Ones — People playing the long game.' : 'New to Monad.',
+      Number(d.txns)>0 ? 'Real Ones — People playing the long game.' : 'New to Monad.',
       '', '#Monad #MonadMainnet'
     ];
     navigator.clipboard.writeText(lines.join('\n'))
-      .then(() => setStatus('Copied!','ok'))
-      .catch(() => setStatus('Copy failed','err'));
+      .then(()=>setStatus('Copied!','ok'))
+      .catch(()=>setStatus('Copy failed','err'));
   }
 
   function shareCard() {
@@ -394,8 +335,8 @@
     window.open('https://twitter.com/intent/tweet?text='+encodeURIComponent(tweet),'_blank','noopener');
   }
 
-  $('addrInput').addEventListener('keydown', e => { if(e.key==='Enter') fetchData(); });
-  $('userInput') && $('userInput').addEventListener('keydown', e => { if(e.key==='Enter') generateCard(); });
+  $('addrInput').addEventListener('keydown', e=>{if(e.key==='Enter')fetchData();});
+  $('userInput') && $('userInput').addEventListener('keydown', e=>{if(e.key==='Enter')generateCard();});
 </script>
 </body>
 </html>
