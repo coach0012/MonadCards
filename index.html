@@ -159,7 +159,7 @@
         </div>
         <div class="real-txt">
           <div class="real-title" id="realTitle">Real Ones</div>
-          <div class="real-sub" id="realSub">People playing the long game.</div>
+          <div class="real-sub" id="realSub">The real believer.</div>
         </div>
         <div class="pulse-dot"></div>
       </div>
@@ -242,7 +242,7 @@
       }).then(r => r.json());
 
       // Fire all 19 NFT checks concurrently — each goes server-side, no CORS
-      setStatus('Scanning 19 NFT collections...');
+      setStatus('Scanning  NFT collections...');
       const nftPromises = NFTS.map(nft => checkNft(addr, nft.ca));
 
       const [stats, nftResults] = await Promise.all([statsPromise, Promise.all(nftPromises)]);
